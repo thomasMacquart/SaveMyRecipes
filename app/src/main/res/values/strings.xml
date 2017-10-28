@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">recipeMe</string>
+    <string name="create_recipe_title">Create your recipe</string>
 </resources>
