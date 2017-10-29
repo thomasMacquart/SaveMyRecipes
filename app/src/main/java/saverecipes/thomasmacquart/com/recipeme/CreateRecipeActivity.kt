@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import kotlinx.android.synthetic.main.create_recipe_activity.*
 
 /**
  * Created by thomas.macquart on 26/10/2017.
@@ -14,9 +15,12 @@ fun Context.UserDetailIntent(): Intent {
 }
 
 class CreateRecipeActivity : Activity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_recipe_activity)
+
+        validate_recipe_button.setOnClickListener {
+            Recipe(recipe_title_input.text.toString(), "test")
+        }
     }
 }
