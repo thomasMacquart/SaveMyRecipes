@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme
+package saverecipes.thomasmacquart.com.recipeme.recipes.data
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

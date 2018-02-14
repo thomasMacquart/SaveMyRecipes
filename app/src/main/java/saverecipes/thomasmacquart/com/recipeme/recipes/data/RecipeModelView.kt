@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme
+package saverecipes.thomasmacquart.com.recipeme.recipes.data
 
 /**
  * Created by thomas.macquart on 06/01/2018.

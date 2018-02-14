@@ -1,8 +1,8 @@
 package saverecipes.thomasmacquart.com.recipeme.core
 
 import dagger.Component
-import saverecipes.thomasmacquart.com.recipeme.RecipeListPresenterModule
-import saverecipes.thomasmacquart.com.recipeme.RecipesListActivity
+import saverecipes.thomasmacquart.com.recipeme.recipes.RecipeListPresenterModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.RecipesListActivity
 import javax.inject.Singleton
 
 /**

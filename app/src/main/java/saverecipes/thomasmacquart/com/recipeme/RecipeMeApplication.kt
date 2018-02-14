@@ -3,6 +3,7 @@ package saverecipes.thomasmacquart.com.recipeme
 import android.app.Application
 import android.arch.persistence.room.Room
 import saverecipes.thomasmacquart.com.recipeme.core.AppComponent
+import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
 import saverecipes.thomasmacquart.com.recipeme.core.AppModule
 import saverecipes.thomasmacquart.com.recipeme.core.DaggerAppComponent
 

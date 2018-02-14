@@ -1,10 +1,12 @@
-package saverecipes.thomasmacquart.com.recipeme
+package saverecipes.thomasmacquart.com.recipeme.recipes.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.recipe_row_layout.view.*
+import saverecipes.thomasmacquart.com.recipeme.R
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
 
 /**
  * Created by thomas.macquart on 06/01/2018.

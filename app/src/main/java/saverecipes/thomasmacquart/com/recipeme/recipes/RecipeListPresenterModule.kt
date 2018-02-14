@@ -1,7 +1,9 @@
-package saverecipes.thomasmacquart.com.recipeme
+package saverecipes.thomasmacquart.com.recipeme.recipes
 
 import dagger.Module
 import dagger.Provides
+import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
+import saverecipes.thomasmacquart.com.recipeme.recipes.presenter.RecipesListPresenter
 import javax.inject.Singleton
 
 /**

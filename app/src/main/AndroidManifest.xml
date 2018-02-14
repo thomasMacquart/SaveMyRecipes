@@ -9,14 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".RecipesListActivity" android:screenOrientation="portrait">
+        <activity android:name=".recipes.ui.RecipesListActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateRecipeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".recipes.ui.CreateRecipeActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
