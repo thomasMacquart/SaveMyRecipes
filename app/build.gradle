@@ -43,6 +43,14 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
 
+    //dagger
+    kapt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.google.dagger:dagger:2.5'
+
+}
+
+kapt {
+    generateStubs = true
 }
 repositories {
     mavenCentral()
