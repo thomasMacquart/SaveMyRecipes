@@ -1,20 +1,20 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui
 
-import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.annotation.Nullable
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.recipes_list_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.recipes.adapter.RecipesListAdapter
 import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.presenter.RecipesListPresenter
-import javax.inject.Inject
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.RecipeViewModel
 
-class RecipesListActivity : Activity(), RecipeListView {
 
-    @Inject
-    lateinit var presenter : RecipesListPresenter
+class RecipesListActivity : AppCompatActivity() {
 
     lateinit var adapter : RecipesListAdapter
 
@@ -27,19 +27,23 @@ class RecipesListActivity : Activity(), RecipeListView {
             goToCreateRecipe()
         }
 
-        //presenter = RecipesListPresenter(RecipeMeApplication.database.RecipeDao())
-        presenter.bind(this)
-        presenter.getRecipes()
-    }
-
-    override fun onDataFetched(recipes: List<Recipe>) {
-        adapter = RecipesListAdapter(recipes) {
-
-        }
-        recipes_list.adapter = adapter
         recipes_list.layoutManager = LinearLayoutManager(this)
-        adapter.notifyDataSetChanged()
+        recipes_list.adapter = adapter
+
+        val model = ViewModelProviders.of(this).get(RecipeViewModel::class.java!!)
+        model.getRecipes().observe(this, object : Observer<List<Recipe>> {
+            override fun onChanged(@Nullable recipes: List<Recipe>?) {
+                if (recipes != null) {
+                    adapter = RecipesListAdapter(recipes) {
+                        //onitemclick
+                    }
+
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        })
     }
+
 
     private fun goToCreateRecipe() {
         startActivity(this.UserDetailIntent())
