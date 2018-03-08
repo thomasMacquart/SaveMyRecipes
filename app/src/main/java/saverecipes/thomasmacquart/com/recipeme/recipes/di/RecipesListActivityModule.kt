@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes
+package saverecipes.thomasmacquart.com.recipeme.recipes.di
 
 import android.arch.lifecycle.ViewModelProviders
 import dagger.Module

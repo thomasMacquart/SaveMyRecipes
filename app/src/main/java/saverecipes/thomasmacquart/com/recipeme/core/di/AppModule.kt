@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme.core
+package saverecipes.thomasmacquart.com.recipeme.core.di
 
 import android.content.Context
 import dagger.Binds
