@@ -1,6 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.core
 
 import android.content.Context
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
@@ -11,8 +12,7 @@ import javax.inject.Singleton
  */
 
 @Module
-class AppModule(val app : RecipeMeApplication) {
-    @Provides
-    @Singleton
-    fun provideContext() : Context = app
+abstract class AppModule(val app : RecipeMeApplication) {
+    @Binds
+    abstract fun provideContext(app : RecipeMeApplication) : Context
 }
