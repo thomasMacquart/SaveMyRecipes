@@ -2,7 +2,6 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v7.app.AppCompatActivity
@@ -34,13 +33,12 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recipes_list_activity)
 
-        //model = ViewModelProviders.of(this).get(RecipeListViewModel::class.java!!)
-
         create_recipe_button.setOnClickListener {
             goToCreateRecipe()
         }
 
         recipes_list.layoutManager = LinearLayoutManager(this)
+
 
         model.getRecipes().observe(this, object : Observer<List<Recipe>> {
             override fun onChanged(@Nullable recipes: List<Recipe>?) {
