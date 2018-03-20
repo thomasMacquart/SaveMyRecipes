@@ -15,7 +15,11 @@ import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.recipes.adapter.RecipesListAdapter
 import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.RecipeListViewModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.RecipeListViewModelFactory
 import javax.inject.Inject
+import android.arch.lifecycle.ViewModelProviders
+
+
 
 
 class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
@@ -25,8 +29,14 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
 
     lateinit var adapter : RecipesListAdapter
     @Inject
+    lateinit var factory : RecipeListViewModelFactory
+
     lateinit var model : RecipeListViewModel
 
+    fun createViewModel(): RecipeListViewModel {
+        return ViewModelProviders.of(this, factory)
+                .get(RecipeListViewModel::class.java!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -36,6 +46,8 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         create_recipe_button.setOnClickListener {
             goToCreateRecipe()
         }
+
+        model = createViewModel()
 
         recipes_list.layoutManager = LinearLayoutManager(this)
 

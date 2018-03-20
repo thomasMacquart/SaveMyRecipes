@@ -7,6 +7,9 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
+import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
+import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.RecipeRepo
 import javax.inject.Singleton
 
 /**
@@ -19,11 +22,11 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
 
     @Component.Builder
     interface Builder {
-        @BindsInstance fun application(app: Application): Builder
+        @BindsInstance fun application(app: RecipeMeApplication): Builder
         fun build(): AppComponent
     }
 
-    abstract override fun inject(instance: DaggerApplication)
+    override fun inject(instance: DaggerApplication)
 
     fun inject(app: RecipeMeApplication)
 }

@@ -7,7 +7,7 @@ import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import saverecipes.thomasmacquart.com.recipeme.core.DaggerAppComponent
+import saverecipes.thomasmacquart.com.recipeme.core.di.DaggerAppComponent
 import javax.inject.Inject
 
 /**
@@ -15,10 +15,10 @@ import javax.inject.Inject
  */
 class RecipeMeApplication : Application(), HasActivityInjector {
 
-    companion object {
+    /*companion object {
         lateinit var database: AppDatabase
             private set
-    }
+    }*/
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
@@ -26,14 +26,16 @@ class RecipeMeApplication : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
+        /*database = Room.databaseBuilder(this,
+                AppDatabase::class.java, "recipeme-db").allowMainThreadQueries().build()*/
+
         DaggerAppComponent
                 .builder()
                 .application(this)
                 .build()
                 .inject(this);
 
-        database = Room.databaseBuilder(this,
-                AppDatabase::class.java, "recipeme-db").allowMainThreadQueries().build()
+
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

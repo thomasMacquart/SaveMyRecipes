@@ -24,9 +24,9 @@ class CreateRecipeActivity : Activity() {
         setContentView(R.layout.create_recipe_activity)
 
         validate_recipe_button.setOnClickListener {
-            val recipe = Recipe(0, "oeuf au plat", "faites chauffer un oeuf")
+            /*val recipe = Recipe(0, "oeuf au plat", "faites chauffer un oeuf")
             RecipeMeApplication.database?.RecipeDao()?.saveRecipe(recipe);
-            finish()
+            finish()*/
         }
     }
 }

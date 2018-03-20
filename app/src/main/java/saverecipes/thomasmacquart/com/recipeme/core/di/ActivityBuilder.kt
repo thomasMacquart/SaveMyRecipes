@@ -13,5 +13,5 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.RecipesListActivity
 abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = arrayOf(RecipesListActivityModule::class))
-    internal abstract fun bindRecipesListActivity(): RecipesListActivity
+    abstract fun bindRecipesListActivity(): RecipesListActivity
 }

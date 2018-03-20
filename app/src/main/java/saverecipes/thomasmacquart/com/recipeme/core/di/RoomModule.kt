@@ -11,17 +11,17 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import saverecipes.thomasmacquart.com.recipeme.recipes.data.RecipeRepo
 import javax.inject.Singleton
 
-/**
- * Created by thomas.macquart on 12/02/2018.
- */
 
+/**
+ * Created by thomas.macquart on 12/03/2018.
+ */
 @Module
-class AppModule {
-    @Provides
-    @Singleton
-    fun provideContext(app : RecipeMeApplication) : Context {
-        return app;
-    }
+class RoomModule {
+
+   /* var appDatabase: AppDatabase = Room.databaseBuilder(app,
+            AppDatabase::class.java, "recipeme-db").allowMainThreadQueries().build()*/
+
+
 
     @Singleton
     @Provides
