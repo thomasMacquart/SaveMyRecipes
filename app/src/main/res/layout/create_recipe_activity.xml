@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     android:orientation="vertical">
 
     <ScrollView
@@ -31,6 +32,7 @@
 
     <LinearLayout
         android:padding="16dp"
+        android:background="#efefef"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -38,6 +40,7 @@
             android:id="@+id/validate_recipe_button"
             android:padding="24dp"
             android:gravity="center"
+            android:background="@color/mainColor"
             android:text="@string/validate_recipe_btn_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

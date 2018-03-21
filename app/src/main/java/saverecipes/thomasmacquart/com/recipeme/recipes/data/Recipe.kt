@@ -10,8 +10,10 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "Recipe")
 data class Recipe (
-        @PrimaryKey(autoGenerate = true)
-        val uid: Long,
-        @ColumnInfo(name = "NAME") val name : String = "",
-        @ColumnInfo(name = "DESCRIPTION") val description : String = ""
-)
+
+        @ColumnInfo(name = "NAME") var name : String = "",
+        @ColumnInfo(name = "DESCRIPTION") var description : String = ""
+) {
+        @ColumnInfo(name = "id")
+        @PrimaryKey(autoGenerate = true) var id: Long = 0
+}

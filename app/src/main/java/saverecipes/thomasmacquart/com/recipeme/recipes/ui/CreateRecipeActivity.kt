@@ -10,7 +10,9 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import kotlinx.android.synthetic.main.create_recipe_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.CreateRecipeViewModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.CreateRecipeViewModelFactory
 import javax.inject.Inject
@@ -40,6 +42,9 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
         model = createViewModel()
 
+        validate_recipe_button.setOnClickListener {
+            model.createRecipe(Recipe("oeuf sur le plat", "do it!"))
+        }
     }
 
     fun createViewModel(): CreateRecipeViewModel {
