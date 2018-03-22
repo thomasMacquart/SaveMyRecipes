@@ -18,11 +18,12 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.RecipeListViewM
 import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.RecipeListViewModelFactory
 import javax.inject.Inject
 import android.arch.lifecycle.ViewModelProviders
-
-
+import android.content.Intent
 
 
 class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
+
+    private val CREATE_RECIPE_INTENT : Int = 100
 
     @Inject
     lateinit var activityDispatchingAndroidInjector : DispatchingAndroidInjector<Activity>
@@ -52,6 +53,19 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         recipes_list.layoutManager = LinearLayoutManager(this)
 
 
+        doRequest()
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == CREATE_RECIPE_INTENT && resultCode == Activity.RESULT_OK) {
+            doRequest()
+        }
+    }
+
+    fun doRequest() {
         model.getRecipes().observe(this, object : Observer<List<Recipe>> {
             override fun onChanged(@Nullable recipes: List<Recipe>?) {
                 if (recipes != null) {
@@ -65,9 +79,8 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         })
     }
 
-
     private fun goToCreateRecipe() {
-        startActivity(this.UserDetailIntent())
+        startActivityForResult(this.UserDetailIntent(), CREATE_RECIPE_INTENT)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

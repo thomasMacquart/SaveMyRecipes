@@ -13,18 +13,42 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@string/create_recipe_title" />
 
             <EditText
                 android:id="@+id/recipe_title_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:padding="4dp" />
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/recipes_type_create_recipe"/>
+
+            <Spinner
+                android:layout_width=""
+                android:layout_height=""></Spinner>-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/recipes_desciption_create_recipe"/>
+
+            <EditText
+                android:id="@+id/recipe_desciption_input"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

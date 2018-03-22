@@ -3,4 +3,6 @@
     <string name="create_recipe_title">Create your recipe</string>
     <string name="validate_recipe_btn_text">Yummi!</string>
     <string name="recipes_title_recipes_list">Your recipes</string>
+    <string name="recipes_desciption_create_recipe">Your recipe description</string>
+    <string name="recipes_type_create_recipe">Your recipe type</string>
 </resources>

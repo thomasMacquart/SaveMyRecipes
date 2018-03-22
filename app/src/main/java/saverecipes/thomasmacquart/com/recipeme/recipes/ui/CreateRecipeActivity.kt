@@ -43,7 +43,9 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
         model = createViewModel()
 
         validate_recipe_button.setOnClickListener {
-            model.createRecipe(Recipe("oeuf sur le plat", "do it!"))
+            model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString()))
+            setResult(Activity.RESULT_OK)
+            finish()
         }
     }
 

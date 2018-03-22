@@ -7,4 +7,5 @@
     <color name="mainColor">#FF6834</color>
     <color name="backgroundColor">#fffdfd</color>
     <color name="dividerColor">#EBEBEB</color>
+    <color name="black">#000000</color>
 </resources>
