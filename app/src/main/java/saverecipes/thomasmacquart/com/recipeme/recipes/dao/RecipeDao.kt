@@ -1,5 +1,6 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
@@ -15,5 +16,5 @@ interface RecipeDao {
     @Insert(onConflict = REPLACE)
     fun saveRecipe(recipe: Recipe)
     @Query("select * from Recipe")
-    fun getRecipes() : List<Recipe>
+    fun getRecipes() : LiveData<List<Recipe>>
 }
