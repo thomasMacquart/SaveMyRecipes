@@ -53,8 +53,8 @@ class RecipesListActivityTest {
         }
 
     @Test
+    //todo run in ui thread only
     fun screenTest() {
-        onIdle()
         onView(withId(R.id.create_recipe_button)).perform(click())
     }
 
