@@ -2,9 +2,9 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.di
 
 import dagger.Module
 import dagger.Provides
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.RecipeRepo
-import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.CreateRecipeViewModel
-import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.RecipeListViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeViewModel
 
 /**
  * Created by thomas.macquart on 21/03/2018.
@@ -12,5 +12,5 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.RecipeListViewM
 @Module
 class CreateRecipeActivityModule {
     @Provides
-    fun provideModelView(repo : RecipeRepo): CreateRecipeViewModel = RecipeListViewModelFactory(repo).create(CreateRecipeViewModel::class.java)
+    fun provideModelView(repo : RecipeRepo): ViewModelFactory<CreateRecipeViewModel> = ViewModelFactory(CreateRecipeViewModel(repo))
 }

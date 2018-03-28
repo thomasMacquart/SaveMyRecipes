@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes.data
+package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData

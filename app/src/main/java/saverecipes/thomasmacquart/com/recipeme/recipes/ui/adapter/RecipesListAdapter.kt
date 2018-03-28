@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes.adapter
+package saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.recipe_row_layout.view.*
 import saverecipes.thomasmacquart.com.recipeme.R
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 
 /**
  * Created by thomas.macquart on 06/01/2018.
@@ -26,6 +26,7 @@ class RecipesListAdapter(val items : List<Recipe>, val listener: (Recipe) -> Uni
     class RecipeViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         fun bind(recipe: Recipe, listener: (Recipe) -> Unit) = with(itemView) {
             recipe_row_title.text = recipe.name
+            recipe_row_type.text = recipe.type
             setOnClickListener { listener(recipe) }
         }
     }

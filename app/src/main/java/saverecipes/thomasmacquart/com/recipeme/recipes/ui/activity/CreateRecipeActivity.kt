@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes.ui
+package saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
@@ -12,9 +12,9 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import kotlinx.android.synthetic.main.create_recipe_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.CreateRecipeViewModel
-import saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel.CreateRecipeViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeViewModel
 import javax.inject.Inject
 
 /**
@@ -31,7 +31,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
     lateinit var activityDispatchingAndroidInjector : DispatchingAndroidInjector<Activity>
 
     @Inject
-    lateinit var factory : CreateRecipeViewModelFactory
+    lateinit var factory : ViewModelFactory<CreateRecipeViewModel>
 
     lateinit var model : CreateRecipeViewModel
 
@@ -43,7 +43,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
         model = createViewModel()
 
         validate_recipe_button.setOnClickListener {
-            model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString()))
+            model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), "starter"))
             setResult(Activity.RESULT_OK)
             finish()
         }

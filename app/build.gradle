@@ -53,6 +53,11 @@ dependencies {
     //android architecture
     implementation "android.arch.lifecycle:extensions:1.1.0"
 
+    //test
+    androidTestImplementation 'org.mockito:mockito-android:2.8.47'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
 }
 
 kapt {

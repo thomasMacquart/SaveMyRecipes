@@ -15,19 +15,11 @@ import javax.inject.Inject
  */
 class RecipeMeApplication : Application(), HasActivityInjector {
 
-    /*companion object {
-        lateinit var database: AppDatabase
-            private set
-    }*/
-
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
-
-        /*database = Room.databaseBuilder(this,
-                AppDatabase::class.java, "recipeme-db").allowMainThreadQueries().build()*/
 
         DaggerAppComponent
                 .builder()

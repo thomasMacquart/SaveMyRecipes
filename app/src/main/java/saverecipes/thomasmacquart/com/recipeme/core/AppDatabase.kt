@@ -2,7 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme.core
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 
 /**

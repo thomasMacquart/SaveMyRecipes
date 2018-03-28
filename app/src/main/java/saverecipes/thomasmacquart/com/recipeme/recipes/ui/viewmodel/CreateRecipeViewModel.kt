@@ -1,9 +1,8 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes.viewmodel
+package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import android.arch.lifecycle.ViewModel
-import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.RecipeRepo
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import javax.inject.Inject
 
 /**
