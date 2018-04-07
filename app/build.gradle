@@ -4,9 +4,9 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 //enable anotation processing with kotlin, disabled by default
-/*kapt {
+kapt {
     generateStubs = true
-}*/
+}
 
 android {
     compileSdkVersion 26
@@ -24,6 +24,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -58,6 +61,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    kapt 'com.android.databinding:compiler:3.0.1'
 }
 
 kapt {

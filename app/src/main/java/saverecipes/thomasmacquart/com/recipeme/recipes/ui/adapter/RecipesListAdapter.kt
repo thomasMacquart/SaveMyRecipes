@@ -1,5 +1,6 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter
 
+import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +15,24 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 class RecipesListAdapter(val items : List<Recipe>, val listener: (Recipe) -> Unit) : RecyclerView.Adapter<RecipesListAdapter.RecipeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        var view : View = LayoutInflater.from(parent.context).inflate(R.layout.recipe_row_layout, parent, false)
-        return RecipeViewHolder(view)
+        /*var view : View = LayoutInflater.from(parent.context).inflate(R.layout.recipe_row_layout, parent, false)
+        return RecipeViewHolder(view)*/
+
+        val binding : RecipeItemBinding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.context), R.layout.recipe_row_layout,
+                        parent, false)
+        return RecipeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) = holder.bind(items[position], listener)
+    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        holder.binding.setComment(items.get(position))
+        holder.binding.executePendingBindings()
+    }
 
     override fun getItemCount(): Int = items.size
 
 
-    class RecipeViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        fun bind(recipe: Recipe, listener: (Recipe) -> Unit) = with(itemView) {
-            recipe_row_title.text = recipe.name
-            recipe_row_type.text = recipe.type
-            setOnClickListener { listener(recipe) }
-        }
+    class RecipeViewHolder(binding : RecipeItemBinding) : RecyclerView.ViewHolder(binding.getRoot) {
+        val binding = binding
     }
 }
