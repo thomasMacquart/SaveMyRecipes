@@ -15,9 +15,11 @@ import kotlinx.android.synthetic.main.recipes_list_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAdapter
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
 import javax.inject.Inject
+import android.app.ProgressDialog
+import android.view.View
 
 
 class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
@@ -50,16 +52,21 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
 
         recipes_list.layoutManager = LinearLayoutManager(this)
 
-
+        simpleProgressBar.visibility = View.VISIBLE
         doRequest()
 
     }
 
     fun doRequest() {
-        model.getRecipes().observe(this, object : Observer<List<Recipe>> {
-            override fun onChanged(@Nullable recipes: List<Recipe>?) {
-                if (recipes != null) {
-                    adapter = RecipesListAdapter(recipes) {
+        model.getRecipes().observe(this, object : Observer<RecipesListModel> {
+            override fun onChanged(@Nullable recipesListModel: RecipesListModel?) {
+                if (recipesListModel != null) {
+                    if (recipesListModel.isLoading) {
+                        simpleProgressBar.visibility = View.VISIBLE
+                    } else {
+                        simpleProgressBar.visibility = View.GONE
+                    }
+                    adapter = RecipesListAdapter(recipesListModel.recipesListResult) {
                         //onitemclick
                     }
                     recipes_list.adapter = adapter
