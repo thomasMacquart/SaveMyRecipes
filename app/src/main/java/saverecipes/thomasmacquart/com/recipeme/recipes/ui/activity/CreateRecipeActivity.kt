@@ -16,6 +16,8 @@ import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeViewModel
 import javax.inject.Inject
+import android.widget.ArrayAdapter
+
 
 /**
  * Created by thomas.macquart on 21/03/2018.
@@ -28,12 +30,12 @@ fun Context.UserDetailIntent(): Intent {
 class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
     @Inject
-    lateinit var activityDispatchingAndroidInjector : DispatchingAndroidInjector<Activity>
+    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     @Inject
-    lateinit var factory : ViewModelFactory<CreateRecipeViewModel>
+    lateinit var factory: ViewModelFactory<CreateRecipeViewModel>
 
-    lateinit var model : CreateRecipeViewModel
+    lateinit var model: CreateRecipeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -42,8 +44,16 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
         model = createViewModel()
 
+        val adapter = ArrayAdapter.createFromResource(this,
+                R.array.meal_types, android.R.layout.simple_spinner_item)
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+// Apply the adapter to the spinner
+        recipe_type_spinner.setAdapter(adapter)
+        recipe_type_spinner.setSelection(0)
+
         validate_recipe_button.setOnClickListener {
-            model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), "starter"))
+            model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString()))
             setResult(Activity.RESULT_OK)
             finish()
         }

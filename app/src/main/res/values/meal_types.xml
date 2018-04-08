@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="meal_types">
+        <item>@string/starter_type</item>
+        <item>@string/main_type</item>
+        <item>@string/dessert_type</item>
+    </string-array>
+</resources>
