@@ -1,14 +1,10 @@
-node {
-    def project = 'android'
-
-    stage("prepare") {
-        echo "bonjour"
-        checkout scm
+pipeline {
+    agent {
+        docker { image 'node:7-alpine' }
     }
-
-    stage("build container") {
-        docker.image('node:7-alpine').inside {
-            stage('Test') {
+    stages {
+        stage('Test') {
+            steps {
                 sh 'node --version'
             }
         }
