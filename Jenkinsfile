@@ -1,15 +1,17 @@
 pipeline {
 agent none
     stage("Parallel") {
-        steps {
-            parallel (
-                "firstTask" : {
-                    echo "bonjour"
+        parallel(
+                'Unit Tests': {
+                    container('node') {
+                        echo "test1"
+                    }
                 },
-                "secondTask" : {
-                    echo "coucou"
+                'API Tests': {
+                    container('node') {
+                        echo "test2"
+                    }
                 }
             )
-        }
     }
 }
