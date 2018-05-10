@@ -1,19 +1,17 @@
 pipeline {
-agent none
+    agent none
     stages {
-        stage("Parallel") {
-            parallel(
-                    'Unit Tests': {
-                        container('node') {
-                            echo "test1"
-                        }
-                    },
-                    'API Tests': {
-                        container('node') {
-                            echo "test2"
-                        }
-                    }
-                )
+        stage('Example Build') {
+            agent { docker 'maven:3-alpine' }
+            steps {
+                echo 'Hello, Maven'
+            }
+        }
+        stage('Example Test') {
+            agent { docker 'openjdk:8-jre' }
+            steps {
+                echo 'Hello, JDK'
+            }
         }
     }
 }
