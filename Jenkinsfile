@@ -15,12 +15,14 @@ pipeline {
 
                     steps {
                         echo "On Branch A"
+                        ./gradlew testDebug
                     }
                 }
                 stage('Branch B') {
 
                     steps {
                         echo "On Branch B"
+                        ./gradlew testDebug
                     }
                 }
             }
