@@ -4,9 +4,14 @@ agent any
 
     stages {
         stage('Test') {
-            steps {
-                echo "test"
-            }
+            parallel(
+                  a: {
+                    echo "This is branch a"
+                  },
+                  b: {
+                    echo "This is branch b"
+                  }
+                )
         }
     }
 }
