@@ -7,6 +7,6 @@ node {
     }
 
     stage("build container") {
-        sh("docker build -t ${project} .")
+        docker.image('xaethos/android-sdk-resource')
     }
 }
