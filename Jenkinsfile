@@ -7,6 +7,10 @@ node {
     }
 
     stage("build container") {
-        sh("docker build -t ${android} .")
+        docker.image('DigitalInnovation/android-sdk-resource').inside {
+            stage("build") {
+                echo "coucou"
+            }
+        }
     }
 }
