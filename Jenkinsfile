@@ -4,9 +4,12 @@ node {
 
     stage("prepare") {
         echo "bonjour"
+        checkout scm
     }
 
     stage("build container") {
-        docker.image('xaethos/android-sdk-resource')
+        docker.image('xaethos/android-sdk-resource') {
+            ./gradlew assembleDebug
+        }
     }
 }
