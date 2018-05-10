@@ -1,4 +1,5 @@
 node {
+    def project = 'android'
 
     stage("prepare") {
         echo "bonjour"
@@ -6,6 +7,6 @@ node {
     }
 
     stage("build container") {
-        sh("docker build -t ${project} .")
+        sh("docker build -t ${android} .")
     }
 }
