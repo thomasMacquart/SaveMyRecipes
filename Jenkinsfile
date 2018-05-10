@@ -1,15 +1,32 @@
 pipeline {
-    agent none
+    agent any
     stages {
-    parallel {
-            stage('Example Build') {
-                steps {
-                    echo 'Hello, Maven'
-                }
+        stage('Non-Parallel Stage') {
+            steps {
+                echo 'This stage will be executed first.'
             }
-            stage('Example Test') {
-                steps {
-                    echo 'Hello, JDK'
+        }
+        stage('Parallel Stage') {
+            when {
+                branch 'master'
+            }
+            failFast true
+            parallel {
+                stage('Branch A') {
+                    agent {
+                        label any
+                    }
+                    steps {
+                        echo "On Branch A"
+                    }
+                }
+                stage('Branch B') {
+                    agent {
+                        label any
+                    }
+                    steps {
+                        echo "On Branch B"
+                    }
                 }
             }
         }
