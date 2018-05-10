@@ -1,17 +1,8 @@
-pipeline {
-
-agent any
-
-    stages {
+node {
+    /* Requires the Docker Pipeline plugin to be installed */
+    docker.image('node:7-alpine').inside {
         stage('Test') {
-            parallel(
-                  a: {
-                    echo "This is branch a"
-                  },
-                  b: {
-                    echo "This is branch b"
-                  }
-                )
+            sh 'node --version'
         }
     }
 }
