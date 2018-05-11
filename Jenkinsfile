@@ -21,7 +21,9 @@ pipeline {
         }
 
         stage('Unit test') {
-            sh unitTestCommand
+            steps {
+                sh unitTestCommand
+            }
         }
 
     }
