@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    def props = readProperties  file: 'dir/my.properties'
     stages {
         stage('Non-Parallel Stage') {
             steps {
@@ -7,24 +8,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Parallel Stage') {
-            when {
-                branch 'master'
-            }
-            parallel {
-                stage('Branch A') {
 
-                    steps {
-                        ./gradlew testDebug
-                    }
-                }
-                stage('Branch B') {
-
-                    steps {
-                        ./gradlew testDebug
-                    }
-                }
-            }
-        }
     }
 }
