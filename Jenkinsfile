@@ -22,7 +22,7 @@ pipeline {
 
         stage('Unit test') {
             steps {
-                echo ${properties.unitTestCommand}
+                echo "${properties.unitTestCommand}"
                 sh '${properties.unitTestCommand}'
             }
         }
