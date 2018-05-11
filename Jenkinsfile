@@ -13,11 +13,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Non-Parallel Stage') {
+        stage('Prepare') {
             steps {
                 echo 'This stage will be executed first.'
                 loadProperties()
             }
+        }
+
+        stage('Unit test') {
+            sh unitTestCommand
         }
 
     }
