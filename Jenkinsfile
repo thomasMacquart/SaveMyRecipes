@@ -1,10 +1,12 @@
+properties = null
+
 
 def loadProperties() {
-	checkout scm
-	File propertiesFile = new File('${workspace}/pipeline.properties')
-	propertiesFile.withInputStream {
-			properties.load(propertiesFile)
-	}
+    node {
+        checkout scm
+        properties = readProperties file: 'jenkins.properties'
+        //echo "Immediate one ${properties.repo}"
+    }
 }
 
 pipeline {
