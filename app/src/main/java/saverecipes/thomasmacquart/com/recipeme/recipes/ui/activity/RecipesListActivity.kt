@@ -67,7 +67,7 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
                         simpleProgressBar.visibility = View.GONE
                     }
                     adapter = RecipesListAdapter(recipesListModel.recipesListResult) {
-                        //onitemclick
+                        startActivity(RecipeDetailsActivity.getStartIntent(this@RecipesListActivity, it.id))
                     }
                     recipes_list.adapter = adapter
                     adapter.notifyDataSetChanged()
