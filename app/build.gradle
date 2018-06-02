@@ -27,7 +27,6 @@ android {
     }
 
     lintOptions {
-        check 'NewApi'
         baseline file("lint-baseline.xml")
     }
 }
