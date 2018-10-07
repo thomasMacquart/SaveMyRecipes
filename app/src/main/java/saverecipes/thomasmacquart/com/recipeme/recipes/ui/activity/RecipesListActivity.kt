@@ -49,6 +49,7 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         }
 
         model = createViewModel()
+        model.loadRecipes()
 
         recipes_list.layoutManager = LinearLayoutManager(this)
 
@@ -58,7 +59,7 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
     }
 
     fun doRequest() {
-        model.getRecipes().observe(this, object : Observer<RecipesListModel> {
+        model.recipes.observe(this, object : Observer<RecipesListModel> {
             override fun onChanged(@Nullable recipesListModel: RecipesListModel?) {
                 if (recipesListModel != null) {
                     if (recipesListModel.isLoading) {

@@ -19,18 +19,18 @@ class RecipeRepo {
     @Inject constructor(dao: RecipeDao) {
         mDao = dao
         mObservableRecipes = MediatorLiveData<RecipesListModel>()
-
-        mObservableRecipes.addSource(dao.getRecipes(),
-                { recipeEntities ->
-                    if (recipeEntities != null) {
-                        val model = RecipesListModel(false, recipeEntities)
-                        mObservableRecipes.postValue(model)
-                    }
-                })
     }
 
-    fun getRecipes(): LiveData<RecipesListModel> {
-        return mObservableRecipes
+    suspend fun getRecipes(): LiveData<RecipesListModel> {
+        mObservableRecipes.addSource(mDao.getRecipes()
+        ) { recipeEntities ->
+            if (recipeEntities != null) {
+                val model = RecipesListModel(false, recipeEntities)
+                mObservableRecipes.postValue(model)
+            }
+        }
+
+        return mObservableRecipes;
     }
 
     //todo return boolean to confirm? reactive app?

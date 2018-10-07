@@ -2,6 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
+import kotlinx.coroutines.experimental.launch
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
@@ -11,10 +12,11 @@ import javax.inject.Inject
 /**
  * Created by thomas.macquart on 14/02/2018.
  */
-open class RecipeListViewModel @Inject constructor(repo : RecipeRepo) : ViewModel() {
-    private val recipes: LiveData<RecipesListModel> = repo.getRecipes()
+open class RecipeListViewModel @Inject constructor(val repo : RecipeRepo) : ViewModel() {
+    public lateinit var recipes: LiveData<RecipesListModel>;
 
-    open fun getRecipes() : LiveData<RecipesListModel> {
-        return recipes;
+    open fun loadRecipes()  = launch {
+        val result = repo.getRecipes()
+        recipes = result
     }
 }
