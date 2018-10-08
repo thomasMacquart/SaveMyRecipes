@@ -34,7 +34,7 @@ class RecipeRepo {
     }
 
     //todo return boolean to confirm? reactive app?
-    fun addRecipe(recipe: Recipe) {
+    suspend fun addRecipe(recipe: Recipe) {
         mDao.saveRecipe(recipe)
     }
 }

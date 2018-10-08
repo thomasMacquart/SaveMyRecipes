@@ -26,7 +26,7 @@ class AppModule {
     @Provides
     fun providesRoomDatabase(application: RecipeMeApplication): AppDatabase {
         return Room.databaseBuilder(application,
-                AppDatabase::class.java, "recipeme-db").allowMainThreadQueries().build()
+                AppDatabase::class.java, "recipeme-db").build()
     }
 
     @Singleton
