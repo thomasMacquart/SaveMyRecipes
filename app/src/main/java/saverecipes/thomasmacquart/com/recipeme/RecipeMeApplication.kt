@@ -2,7 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme
 
 import android.app.Activity
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

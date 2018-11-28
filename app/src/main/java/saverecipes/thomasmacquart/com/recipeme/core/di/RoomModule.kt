@@ -1,6 +1,6 @@
 package saverecipes.thomasmacquart.com.recipeme.core.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication

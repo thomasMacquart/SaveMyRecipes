@@ -1,6 +1,6 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import javax.inject.Inject
 

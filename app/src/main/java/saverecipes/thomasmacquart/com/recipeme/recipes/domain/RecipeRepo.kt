@@ -1,7 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import io.reactivex.Single
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
