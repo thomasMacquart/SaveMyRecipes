@@ -2,6 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import io.reactivex.Single
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class RecipeRepo {
         mObservableRecipes = MediatorLiveData<RecipesListModel>()
     }
 
-    suspend fun getRecipes(): LiveData<RecipesListModel> {
+    /*suspend fun getRecipes(): LiveData<RecipesListModel> {
         mObservableRecipes.addSource(mDao.getRecipes()
         ) { recipeEntities ->
             if (recipeEntities != null) {
@@ -31,6 +32,10 @@ class RecipeRepo {
         }
 
         return mObservableRecipes;
+    }*/
+
+    fun getRecipes(): Single<List<Recipe>> {
+        return mDao.getRecipes()
     }
 
     //todo return boolean to confirm? reactive app?

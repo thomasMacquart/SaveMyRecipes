@@ -18,7 +18,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAda
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
 import javax.inject.Inject
-import android.app.ProgressDialog
+import android.support.v7.widget.RecyclerView
 import android.view.View
 
 
@@ -28,7 +28,8 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
     @Inject
     lateinit var activityDispatchingAndroidInjector : DispatchingAndroidInjector<Activity>
 
-    lateinit var adapter : RecipesListAdapter
+    private lateinit var recipesAdapter : RecipesListAdapter
+    private lateinit var recipesLayoutManager: RecyclerView.LayoutManager
     @Inject
     lateinit var factory : ViewModelFactory<RecipeListViewModel>
 
@@ -49,30 +50,42 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         }
 
         model = createViewModel()
-        model.loadRecipes()
 
-        recipes_list.layoutManager = LinearLayoutManager(this)
+        recipesLayoutManager = LinearLayoutManager(this)
+        recipesAdapter = RecipesListAdapter {
+            startActivity(RecipeDetailsActivity.getStartIntent(this@RecipesListActivity, it.id))
+        }
+
+        recipes_list.apply {
+            setHasFixedSize(true)
+            layoutManager = recipesLayoutManager
+            adapter = recipesAdapter
+        }
+
 
         simpleProgressBar.visibility = View.VISIBLE
-        doRequest()
+
+        subscribe()
+
 
     }
 
-    fun doRequest() {
-        model.recipes.observe(this, object : Observer<RecipesListModel> {
-            override fun onChanged(@Nullable recipesListModel: RecipesListModel?) {
-                if (recipesListModel != null) {
-                    if (recipesListModel.isLoading) {
-                        simpleProgressBar.visibility = View.VISIBLE
-                    } else {
-                        simpleProgressBar.visibility = View.GONE
-                    }
-                    adapter = RecipesListAdapter(recipesListModel.recipesListResult) {
-                        startActivity(RecipeDetailsActivity.getStartIntent(this@RecipesListActivity, it.id))
-                    }
-                    recipes_list.adapter = adapter
-                    adapter.notifyDataSetChanged()
+    override fun onResume() {
+        super.onResume()
+        model.loadRecipes()
+    }
+
+    private fun subscribe() {
+        model.recipes.observe(this, Observer<RecipesListModel> { recipesListModel ->
+            if (recipesListModel != null) {
+                if (recipesListModel.isLoading) {
+                    simpleProgressBar.visibility = View.VISIBLE
+                } else {
+                    simpleProgressBar.visibility = View.GONE
                 }
+
+                recipesAdapter.items = recipesListModel.recipesListResult
+                recipesAdapter.notifyDataSetChanged()
             }
         })
     }

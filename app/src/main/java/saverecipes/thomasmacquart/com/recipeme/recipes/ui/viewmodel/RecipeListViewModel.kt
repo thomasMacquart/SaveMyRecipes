@@ -1,9 +1,9 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
@@ -14,10 +14,22 @@ import javax.inject.Inject
  * Created by thomas.macquart on 14/02/2018.
  */
 open class RecipeListViewModel @Inject constructor(val repo : RecipeRepo) : ViewModel() {
-    public lateinit var recipes: LiveData<RecipesListModel>;
 
-    open fun loadRecipes()  = launch(CommonPool) {
-        val result = repo.getRecipes()
-        recipes = result
+    val recipes: MutableLiveData<RecipesListModel> = MutableLiveData<RecipesListModel>()
+
+    open fun loadRecipes()  {
+        repo.getRecipes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onRecipesReceived, this::onError)
+    }
+
+    private fun onRecipesReceived(recipesList : List<Recipe>) {
+        val model = RecipesListModel(false, recipesList)
+        recipes.value = model
+    }
+
+    private fun onError(error: Throwable) {
+
     }
 }

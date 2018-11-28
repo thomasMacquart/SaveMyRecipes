@@ -4,8 +4,10 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.Dispatchers
 import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
+import saverecipes.thomasmacquart.com.recipeme.core.CoroutinesDispatcherProvider
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import javax.inject.Singleton
@@ -40,4 +42,11 @@ class AppModule {
     fun provideRecipeRepo(dao : RecipeDao) : RecipeRepo {
         return RecipeRepo(dao)
     }
+
+    @Provides
+    fun provideCoroutinesDispatcherProvider() = CoroutinesDispatcherProvider(
+            Dispatchers.Main,
+            Dispatchers.Default,
+            Dispatchers.IO
+    )
 }
