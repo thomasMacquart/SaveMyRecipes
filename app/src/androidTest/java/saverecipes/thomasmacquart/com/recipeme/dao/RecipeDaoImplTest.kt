@@ -1,8 +1,9 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.dao
+package saverecipes.thomasmacquart.com.recipeme.dao
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -14,14 +15,14 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 
 @RunWith(AndroidJUnit4::class)
 class RecipeDaoImplTest {
-    /*private lateinit var  mDatabase : AppDatabase;
+    private lateinit var  mDatabase : AppDatabase
 
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun initDb() {
         mDatabase = Room.inMemoryDatabaseBuilder(
-                InstrumentationRegistry.getContext(),
+                InstrumentationRegistry.getInstrumentation().context,
                 AppDatabase::class.java)
                         // allowing main thread queries, just for testing
                         .allowMainThreadQueries()
@@ -37,18 +38,11 @@ class RecipeDaoImplTest {
         mDatabase.RecipeDao()
                 .getRecipes()
                 .test()
-                // assertValue asserts that there was only one emission
-                .assertValue(object : Predicate<Recipe>() {
-                    @Throws(Exception::class)
-                    fun test(recipe: Recipe): Boolean {
-                        // The emitted user is the expected one
-                        return user.getId().equals(USER.getId()) && user.getUserName().equals(USER.getUserName())
-                    }
-                })
+                .assertValue { it.get(0).name == "test" }
     }
 
     @After
     fun closeDb()  {
         mDatabase.close();
-    }*/
+    }
 }
