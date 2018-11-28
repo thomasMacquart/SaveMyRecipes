@@ -67,11 +67,6 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
 
         subscribe()
 
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         model.loadRecipes()
     }
 

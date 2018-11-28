@@ -2,6 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import io.reactivex.Completable
 import io.reactivex.Single
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
@@ -38,8 +39,7 @@ class RecipeRepo {
         return mDao.getRecipes()
     }
 
-    //todo return boolean to confirm? reactive app?
-    suspend fun addRecipe(recipe: Recipe) {
-        mDao.saveRecipe(recipe)
+    fun addRecipe(recipe: Recipe) : Completable {
+       return Completable.fromAction { mDao.saveRecipe(recipe)}
     }
 }
