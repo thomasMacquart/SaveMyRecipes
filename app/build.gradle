@@ -84,6 +84,8 @@ dependencies {
     //testing
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0-rc01"
 
+    implementation "com.github.gturedi:stateful-layout:1.2.1"
+
 }
 
 kapt {

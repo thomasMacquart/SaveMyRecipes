@@ -73,12 +73,14 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
 
     private fun subscribe() {
         model.recipes.observe(this, Observer {
-            simpleProgressBar.visibility = View.GONE
             when (it) {
-                is RecipeListState.SuccessState -> updateList(it.recipes)
-                is RecipeListState.LoadingState -> simpleProgressBar.visibility = VISIBLE
-                is RecipeListState.ErrorState -> TODO()
-                is RecipeListState.EmptyState -> TODO()
+                is RecipeListState.SuccessState -> {
+                    state_layout.showContent()
+                    updateList(it.recipes)
+                }
+                is RecipeListState.LoadingState -> state_layout.showLoading()
+                is RecipeListState.ErrorState -> state_layout.showError(it.message) {model.loadRecipes()}
+                is RecipeListState.EmptyState -> state_layout.showEmpty()
             }.exhaustive
         })
     }
