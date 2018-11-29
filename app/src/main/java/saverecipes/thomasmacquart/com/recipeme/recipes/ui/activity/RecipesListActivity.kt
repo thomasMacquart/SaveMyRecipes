@@ -1,11 +1,12 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -13,15 +14,12 @@ import dagger.android.HasActivityInjector
 import kotlinx.android.synthetic.main.recipes_list_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAdapter
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
-import javax.inject.Inject
-import androidx.recyclerview.widget.RecyclerView
-import android.view.View
-import android.view.View.VISIBLE
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAdapter
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
+import javax.inject.Inject
 
 
 class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
@@ -35,7 +33,7 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
     @Inject
     lateinit var factory : ViewModelFactory<RecipeListViewModel>
 
-    lateinit var model : RecipeListViewModel
+    private lateinit var model : RecipeListViewModel
 
     fun createViewModel(): RecipeListViewModel {
         return ViewModelProviders.of(this, factory)
