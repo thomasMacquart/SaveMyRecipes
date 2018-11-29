@@ -19,4 +19,7 @@ interface RecipeDao {
     fun saveRecipe(recipe: Recipe)
     @Query("select * from Recipe")
     fun getRecipes() : Single<List<Recipe>>
+    @Query("select * from Recipe where id = :id")
+    fun findRecipeById(id : Long) : Single<Recipe>
+
 }

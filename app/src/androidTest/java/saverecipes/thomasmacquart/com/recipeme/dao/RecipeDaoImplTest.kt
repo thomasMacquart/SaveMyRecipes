@@ -41,6 +41,28 @@ class RecipeDaoImplTest {
                 .assertValue { it.get(0).name == "test" }
     }
 
+    @Test
+    fun `findRecipeById`() {
+        // Given that we have a recipe in the data source
+        mDatabase.RecipeDao().saveRecipe(Recipe("test", "desciption", "dessert"))
+        // When subscribing to the emissions of user
+        mDatabase.RecipeDao()
+                .findRecipeById(1)
+                .test()
+                .assertValue { it.name == "test" }
+    }
+
+    @Test
+    fun `findRecipeByIdNoValues`() {
+        // Given that we have a recipe in the data source
+        mDatabase.RecipeDao().saveRecipe(Recipe("test", "desciption", "dessert"))
+        // When subscribing to the emissions of user
+        mDatabase.RecipeDao()
+                .findRecipeById(400)
+                .test()
+                .assertNoValues()
+    }
+
     @After
     fun closeDb()  {
         mDatabase.close();
