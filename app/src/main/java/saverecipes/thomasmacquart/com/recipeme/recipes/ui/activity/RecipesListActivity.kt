@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
@@ -15,11 +14,14 @@ import kotlinx.android.synthetic.main.recipes_list_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAdapter
-import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
 import javax.inject.Inject
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.view.View.VISIBLE
+import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState
 
 
 class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
@@ -62,12 +64,7 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
             adapter = recipesAdapter
         }
 
-
-        simpleProgressBar.visibility = View.VISIBLE
-
         subscribe()
-
-        simpleProgressBar.visibility = View.VISIBLE
 
         model.loadRecipes()
 
@@ -75,18 +72,20 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
     }
 
     private fun subscribe() {
-        model.recipes.observe(this, Observer<RecipesListModel> { recipesListModel ->
-            if (recipesListModel != null) {
-                if (recipesListModel.isLoading) {
-                    simpleProgressBar.visibility = View.VISIBLE
-                } else {
-                    simpleProgressBar.visibility = View.GONE
-                }
-
-                recipesAdapter.items = recipesListModel.recipesListResult
-                recipesAdapter.notifyDataSetChanged()
-            }
+        model.recipes.observe(this, Observer {
+            simpleProgressBar.visibility = View.GONE
+            when (it) {
+                is RecipeListState.SuccessState -> updateList(it.recipes)
+                is RecipeListState.LoadingState -> simpleProgressBar.visibility = VISIBLE
+                is RecipeListState.ErrorState -> TODO()
+                is RecipeListState.EmptyState -> TODO()
+            }.exhaustive
         })
+    }
+
+    private fun updateList(recipes : List<Recipe>) {
+        recipesAdapter.items = recipes
+        recipesAdapter.notifyDataSetChanged()
     }
 
     private fun goToCreateRecipe() {

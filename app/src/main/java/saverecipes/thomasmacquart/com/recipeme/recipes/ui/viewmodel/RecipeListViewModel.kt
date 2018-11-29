@@ -6,7 +6,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
-import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipesListModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState.*
 import javax.inject.Inject
 
 
@@ -15,10 +15,10 @@ import javax.inject.Inject
  */
 open class RecipeListViewModel @Inject constructor(val repo : RecipeRepo) : ViewModel() {
 
-    val recipes: MutableLiveData<RecipesListModel> = MutableLiveData<RecipesListModel>()
+    val recipes: MutableLiveData<RecipeListState> = MutableLiveData<RecipeListState>()
 
     open fun loadRecipes()  {
-        recipes.value = RecipesListModel(true, listOf())
+        recipes.value = LoadingState()
         repo.getRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -26,11 +26,22 @@ open class RecipeListViewModel @Inject constructor(val repo : RecipeRepo) : View
     }
 
     private fun onRecipesReceived(recipesList : List<Recipe>) {
-        val model = RecipesListModel(false, recipesList)
-        recipes.value = model
+        if (recipesList.isEmpty()) {
+            recipes.value = EmptyState()
+        } else {
+            recipes.value = SuccessState(recipesList)
+        }
     }
 
     private fun onError(error: Throwable) {
-
+        //todo localize it
+        recipes.value = ErrorState("something went wrong")
     }
+}
+
+sealed class RecipeListState {
+    data class SuccessState(val recipes : List<Recipe>) : RecipeListState()
+    data class ErrorState(val message : String) : RecipeListState()
+    class EmptyState : RecipeListState()
+    class LoadingState : RecipeListState()
 }
