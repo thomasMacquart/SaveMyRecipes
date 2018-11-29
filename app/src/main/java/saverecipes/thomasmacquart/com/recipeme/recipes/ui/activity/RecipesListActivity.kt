@@ -67,7 +67,11 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
 
         subscribe()
 
+        simpleProgressBar.visibility = View.VISIBLE
+
         model.loadRecipes()
+
+
     }
 
     private fun subscribe() {

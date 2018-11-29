@@ -18,6 +18,7 @@ open class RecipeListViewModel @Inject constructor(val repo : RecipeRepo) : View
     val recipes: MutableLiveData<RecipesListModel> = MutableLiveData<RecipesListModel>()
 
     open fun loadRecipes()  {
+        recipes.value = RecipesListModel(true, listOf())
         repo.getRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
