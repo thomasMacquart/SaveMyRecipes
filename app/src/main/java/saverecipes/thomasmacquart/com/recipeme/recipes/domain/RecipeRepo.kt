@@ -42,4 +42,8 @@ class RecipeRepo {
     fun addRecipe(recipe: Recipe) : Completable {
        return Completable.fromAction { mDao.saveRecipe(recipe)}
     }
+
+    fun getRecipe(id : Long) : Single<Recipe> {
+        return mDao.findRecipeById(id)
+    }
 }
