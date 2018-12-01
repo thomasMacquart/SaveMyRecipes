@@ -1,6 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class RecipeRepo {
     }
 
 
-    fun getRecipes(): Single<List<Recipe>> {
+    fun getRecipes(): Flowable<List<Recipe>> {
         return mDao.getRecipes()
     }
 

@@ -12,6 +12,9 @@ import dagger.android.DispatchingAndroidInjector
 import kotlinx.android.synthetic.main.recipe_details_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
+import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeDetailsState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeDetailsViewModel
 import javax.inject.Inject
 
@@ -45,16 +48,30 @@ class RecipeDetailsActivity : AppCompatActivity(){
         model = createViewModel()
         observe()
 
+        doRequest()
+    }
+
+    private fun doRequest() {
         model.getRecipe(intent.getLongExtra(RECIPE_ID_BUNDLE, 0))
     }
 
     private fun observe() {
-        model.recipeObservable.observe(this, Observer {
-            recipe_title.text = it.title
+        model.recipeObservableUi.observe(this, Observer { recipe ->
+            when (recipe) {
+                is RecipeDetailsState.OnSuccess -> populateUi(recipe.recipeModel)
+                is RecipeDetailsState.OnError -> state_layout.showError(recipe.error.message) {doRequest()}
+            }.exhaustive
         })
     }
 
-    fun createViewModel(): RecipeDetailsViewModel {
+    private fun populateUi(recipe : RecipeDetailsUiModel) {
+        recipe_title.text = recipe.title
+        recipe_type.text = recipe.type
+        recipe_description.text = recipe.description
+    }
+
+    //TODO : make a base class
+    private fun createViewModel(): RecipeDetailsViewModel {
         return ViewModelProviders.of(this, factory)
                 .get(RecipeDetailsViewModel::class.java!!)
     }

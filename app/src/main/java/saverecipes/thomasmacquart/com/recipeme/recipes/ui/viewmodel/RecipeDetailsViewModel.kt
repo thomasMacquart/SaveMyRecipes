@@ -5,13 +5,12 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeDetailsUseCase
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
-import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsModelView
+import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
 import javax.inject.Inject
 
 class RecipeDetailsViewModel @Inject constructor(val usecase : RecipeDetailsUseCase) : ViewModel() {
 
-    val recipeObservable : MutableLiveData<RecipeDetailsModelView> = MutableLiveData()
+    val recipeObservableUi : MutableLiveData<RecipeDetailsState> = MutableLiveData()
 
     fun getRecipe(id : Long) {
         usecase.getRecipe(id)
@@ -20,11 +19,16 @@ class RecipeDetailsViewModel @Inject constructor(val usecase : RecipeDetailsUseC
                 .subscribe(this::onRecipeReceived, this::onError)
     }
 
-    private fun onRecipeReceived(recipe : RecipeDetailsModelView) {
-        recipeObservable.value = recipe
+    private fun onRecipeReceived(recipeUi : RecipeDetailsUiModel) {
+        recipeObservableUi.value = RecipeDetailsState.OnSuccess(recipeUi)
     }
 
     private fun onError(error : Throwable) {
-
+        recipeObservableUi.value = RecipeDetailsState.OnError(error)
     }
+}
+
+sealed class RecipeDetailsState {
+    data class OnSuccess(val recipeModel : RecipeDetailsUiModel) : RecipeDetailsState()
+    data class OnError(val error: Throwable) : RecipeDetailsState()
 }
