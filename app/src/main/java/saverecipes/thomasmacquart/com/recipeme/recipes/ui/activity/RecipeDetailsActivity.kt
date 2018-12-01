@@ -55,6 +55,7 @@ class RecipeDetailsActivity : AppCompatActivity(){
         model.getRecipe(intent.getLongExtra(RECIPE_ID_BUNDLE, 0))
     }
 
+    //TODO : make a base class
     private fun observe() {
         model.recipeObservableUi.observe(this, Observer { recipe ->
             when (recipe) {
