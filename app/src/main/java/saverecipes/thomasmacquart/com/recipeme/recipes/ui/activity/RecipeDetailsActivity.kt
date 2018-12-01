@@ -61,11 +61,13 @@ class RecipeDetailsActivity : AppCompatActivity(){
             when (recipe) {
                 is RecipeDetailsState.OnSuccess -> populateUi(recipe.recipeModel)
                 is RecipeDetailsState.OnError -> state_layout.showError(recipe.error.message) {doRequest()}
+                is RecipeDetailsState.Loading -> state_layout.showLoading()
             }.exhaustive
         })
     }
 
     private fun populateUi(recipe : RecipeDetailsUiModel) {
+        state_layout.showContent()
         recipe_title.text = recipe.title
         recipe_type.text = recipe.type
         recipe_description.text = recipe.description

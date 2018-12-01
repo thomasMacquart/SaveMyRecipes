@@ -10,7 +10,7 @@ import javax.inject.Inject
  * Created by thomas.macquart on 27/02/2018.
  */
 //todo implement interface
-class RecipeRepo {
+open class RecipeRepo {
 
     var mDao: RecipeDao
 
@@ -28,7 +28,7 @@ class RecipeRepo {
        return Completable.fromAction { mDao.saveRecipe(recipe)}
     }
 
-    fun getRecipe(id : Long) : Single<Recipe> {
+    open fun getRecipe(id : Long) : Single<Recipe> {
         return mDao.findRecipeById(id)
     }
 }
