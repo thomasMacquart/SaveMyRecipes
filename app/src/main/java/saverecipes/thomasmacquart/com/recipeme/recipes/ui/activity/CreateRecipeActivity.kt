@@ -1,11 +1,19 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity
 
 import android.app.Activity
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -13,14 +21,16 @@ import dagger.android.HasActivityInjector
 import kotlinx.android.synthetic.main.create_recipe_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeViewModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipesIntentions
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
-import android.widget.ArrayAdapter
-import android.R.attr.data
-import android.net.Uri
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 
 /**
@@ -35,6 +45,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
     companion object {
         private const val REQUEST_SELECT_IMAGE = 0
+        private const val REQUEST_TAKE_PHOTO = 1
     }
 
     @Inject
@@ -44,6 +55,8 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
     lateinit var factory: ViewModelFactory<CreateRecipeViewModel>
 
     lateinit var model: CreateRecipeViewModel
+
+    private var mCurrentPhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -60,43 +73,89 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
         recipe_type_spinner.setAdapter(adapter)
         recipe_type_spinner.setSelection(0)
 
-        pick_image.setOnClickListener { selectImageInGallery() }
+        take_photo.setOnClickListener { takePhoto() }
 
         validate_recipe_button.setOnClickListener {
-            model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString()))
+            model.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString())))
             setResult(Activity.RESULT_OK)
             finish()
         }
+
+        observe()
+    }
+
+    private fun observe() {
+        model.uiObservable.observe(this, androidx.lifecycle.Observer {
+            when(it) {
+                is CreateRecipeState.ShowImage -> showImage(it.uri)
+                is CreateRecipeState.ShowError -> view_state.showError(it.error) {}
+            }.exhaustive
+        })
+    }
+
+    private fun showImage(uri : String) {
+        val requestOption = RequestOptions()
+                .placeholder(R.drawable.recipe_empty_state_icon).centerCrop()
+
+        Glide.with(this).load(uri)
+                .apply(requestOption)
+                .into(select_image)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode) {
-            REQUEST_SELECT_IMAGE -> {
-                if (resultCode === Activity.RESULT_OK) {
-                    if (data != null && data.data != null) {
+        when (requestCode) {
 
-                        val uri = data.data
-                        model.setImageUri(uri = uri)
-                        val requestOption = RequestOptions()
-                                .placeholder(R.drawable.recipe_empty_state_icon).centerCrop()
+            REQUEST_TAKE_PHOTO -> {
+                if (resultCode == RESULT_OK) {
+                    //val imageBitmap = data?.extras?.get("data") as Bitmap
+                    model.sendIntention(CreateRecipesIntentions.ImageSelected(mCurrentPhotoPath))
+                }
 
-                        Glide.with(this).load(uri)
-                                .apply(requestOption)
-                                .into(select_image)
-                    }
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+          mCurrentPhotoPath = absolutePath
+        }
+    }
+
+    private fun takePhoto() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    return@also model.sendIntention(intention = CreateRecipesIntentions.HandleError)
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                            this,
+                            "saverecipes.thomasmacquart.com.recipeme.provider",
+                            it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
                 }
             }
         }
     }
 
-    private fun selectImageInGallery() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, REQUEST_SELECT_IMAGE)
-        }
-    }
 
     fun createViewModel(): CreateRecipeViewModel {
         return ViewModelProviders.of(this, factory)

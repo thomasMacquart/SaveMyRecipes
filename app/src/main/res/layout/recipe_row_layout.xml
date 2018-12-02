@@ -14,8 +14,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/recipe_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             app:srcCompat="@drawable/recipe_empty_state_icon" />
 
         <LinearLayout
@@ -26,7 +27,7 @@
 
             <TextView
                 android:id="@+id/recipe_row_title"
-                android:textSize="14dp"
+                style="@style/SaveMyRecipe.Text"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

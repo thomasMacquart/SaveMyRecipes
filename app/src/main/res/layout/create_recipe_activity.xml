@@ -18,75 +18,81 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ScrollView
+    <com.gturedi.views.StatefulLayout
+        android:id="@+id/view_state"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/select_image"
-                android:layout_width="match_parent"
-                android:src="@drawable/recipe_empty_state_icon"
-                android:layout_height="150dp" />
-
-            <Button
-                android:id="@+id/pick_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/choose_image"/>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/create_recipe_name"
-                android:textColor="@color/black">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/recipe_title_input"
+                <ImageView
+                    android:id="@+id/select_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:src="@drawable/recipe_empty_state_icon" />
+
+                <Button
+                    android:id="@+id/take_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_image" />
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:inputType="text"
-                    android:padding="4dp"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/create_recipe_name"
+                    android:textColor="@color/black">
 
-            <TextView
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="14dp"
-                android:text="@string/recipes_type_create_recipe" />
+                    <EditText
+                        android:id="@+id/recipe_title_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="4dp"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-
-            <Spinner
-                android:layout_marginTop="8dp"
-                android:id="@+id/recipe_type_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></Spinner>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/recipes_desciption_create_recipe">
-
-                <EditText
-                    android:id="@+id/recipe_desciption_input"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="16dp"
+                    android:text="@string/recipes_type_create_recipe"
+                    android:textSize="14dp" />
 
-        </LinearLayout>
 
-    </ScrollView>
+                <Spinner
+                    android:id="@+id/recipe_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/recipes_desciption_create_recipe">
+
+                    <EditText
+                        android:id="@+id/recipe_desciption_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </com.gturedi.views.StatefulLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
