@@ -44,6 +44,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".recipes.ui.activity.RecipeDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".recipes.ui.activity.SucessActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

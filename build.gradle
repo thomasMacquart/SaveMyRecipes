@@ -9,7 +9,8 @@ buildscript {
             'glide'        : '4.8.0',
             'mockito'        : '2.+',
             'core_testing'        : '2.0.0',
-            'junit'        : '5.3.1'
+            'junit'        : '5.3.1',
+            'lottie'        : '2.8.0'
     ]
 
 

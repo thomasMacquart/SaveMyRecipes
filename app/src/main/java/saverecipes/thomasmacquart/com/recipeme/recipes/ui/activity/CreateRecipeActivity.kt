@@ -77,6 +77,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
         validate_recipe_button.setOnClickListener {
             model.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString())))
+            startActivity(Intent(this, SucessActivity::class.java))
             setResult(Activity.RESULT_OK)
             finish()
         }
