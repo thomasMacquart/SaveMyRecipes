@@ -9,7 +9,7 @@ import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
 import saverecipes.thomasmacquart.com.recipeme.core.CoroutinesDispatcherProvider
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 import javax.inject.Singleton
 
 /**
@@ -39,8 +39,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRecipeRepo(dao : RecipeDao) : RecipeRepo {
-        return RecipeRepo(dao)
+    fun provideRecipeRepo(dao : RecipeDao) : RecipeRepoImpl {
+        return RecipeRepoImpl(dao)
     }
 
     @Provides

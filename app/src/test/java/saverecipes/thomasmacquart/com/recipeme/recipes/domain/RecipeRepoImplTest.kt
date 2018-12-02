@@ -10,12 +10,12 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 
-internal class RecipeRepoTest {
+internal class RecipeRepoImplTest {
 
     @Mock
     private lateinit var dao : RecipeDao
 
-    private val repo : RecipeRepo by lazy { RecipeRepo(dao) }
+    private val repoImpl : RecipeRepoImpl by lazy { RecipeRepoImpl(dao) }
 
     @BeforeEach
     fun setUp() {
@@ -30,7 +30,7 @@ internal class RecipeRepoTest {
             val result = Recipe("test", "test", "test")
             Mockito.`when`(dao.findRecipeById(anyLong())).thenReturn(Single.just(result))
 
-            repo.getRecipe(1).test().assertComplete()
+            repoImpl.getRecipe(1).test().assertComplete()
         }
 
         @Test
@@ -38,7 +38,7 @@ internal class RecipeRepoTest {
             val result = Throwable("error")
             Mockito.`when`(dao.findRecipeById(anyLong())).thenReturn(Single.error(result))
 
-            repo.getRecipe(1).test().assertError(result)
+            repoImpl.getRecipe(1).test().assertError(result)
         }
     }
 
@@ -49,7 +49,7 @@ internal class RecipeRepoTest {
         @Test
         fun addRecipe() {
             val result = Recipe("test", "test", "test")
-            repo.addRecipe(result)
+            repoImpl.addRecipe(result)
             verify(dao).saveRecipe(result)
         }
     }
@@ -64,7 +64,7 @@ internal class RecipeRepoTest {
             result.add(recipe)
             Mockito.`when`(dao.getRecipes()).thenReturn(Flowable.just(result))
 
-            repo.getRecipes().test().assertComplete()
+            repoImpl.getRecipes().test().assertComplete()
         }
 
         @Test
@@ -72,7 +72,7 @@ internal class RecipeRepoTest {
             val result = Throwable("error")
             Mockito.`when`(dao.getRecipes()).thenReturn(Flowable.error(result))
 
-            repo.getRecipes().test().assertError(result)
+            repoImpl.getRecipes().test().assertError(result)
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.*
@@ -33,6 +34,7 @@ class RecipeDetailsViewModelTest {
 
 
     @Test
+    @Disabled //TODO : find workaround to make core test lib work with junit5
     fun getRecipe() {
         val uiModel = RecipeDetailsUiModel("test", "test", "test")
 

@@ -13,7 +13,7 @@ import javax.inject.Inject
 /**
  * Created by thomas.macquart on 14/02/2018.
  */
-open class RecipeListViewModel @Inject constructor(val repo : RecipeRepo) : ViewModel() {
+open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo) : ViewModel() {
 
     val recipes: MutableLiveData<RecipeListState> = MutableLiveData<RecipeListState>()
 
