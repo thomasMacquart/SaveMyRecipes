@@ -7,8 +7,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
+import kotlinx.android.synthetic.main.create_recipe_activity.*
 import kotlinx.android.synthetic.main.recipe_details_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
@@ -71,6 +75,9 @@ class RecipeDetailsActivity : AppCompatActivity(){
         recipe_title.text = recipe.title
         recipe_type.text = recipe.type
         recipe_description.text = recipe.description
+
+        Glide.with(this).load(recipe.uri)
+                .into(detail_image)
     }
 
     //TODO : make a base class
