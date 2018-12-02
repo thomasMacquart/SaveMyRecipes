@@ -3,7 +3,6 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -77,7 +76,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
         validate_recipe_button.setOnClickListener {
             model.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString())))
-            startActivity(Intent(this, SucessActivity::class.java))
+            startActivity(SuccessActivity.Companion.getStartIntent(this))
             setResult(Activity.RESULT_OK)
             finish()
         }
