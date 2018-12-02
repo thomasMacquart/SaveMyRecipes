@@ -17,6 +17,10 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeViewModel
 import javax.inject.Inject
 import android.widget.ArrayAdapter
+import android.R.attr.data
+import android.net.Uri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 
 /**
@@ -28,6 +32,10 @@ fun Context.UserDetailIntent(): Intent {
 }
 
 class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
+
+    companion object {
+        private const val REQUEST_SELECT_IMAGE = 0
+    }
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
@@ -52,10 +60,41 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
         recipe_type_spinner.setAdapter(adapter)
         recipe_type_spinner.setSelection(0)
 
+        pick_image.setOnClickListener { selectImageInGallery() }
+
         validate_recipe_button.setOnClickListener {
             model.createRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString()))
             setResult(Activity.RESULT_OK)
             finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            REQUEST_SELECT_IMAGE -> {
+                if (resultCode === Activity.RESULT_OK) {
+                    if (data != null && data.data != null) {
+
+                        val uri = data.data
+                        model.setImageUri(uri = uri)
+                        val requestOption = RequestOptions()
+                                .placeholder(R.drawable.recipe_empty_state_icon).centerCrop()
+
+                        Glide.with(this).load(uri)
+                                .apply(requestOption)
+                                .into(select_image)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun selectImageInGallery() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(intent, REQUEST_SELECT_IMAGE)
         }
     }
 

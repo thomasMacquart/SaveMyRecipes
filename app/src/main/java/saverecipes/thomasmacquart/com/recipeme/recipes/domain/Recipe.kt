@@ -13,7 +13,9 @@ data class Recipe (
 
         @ColumnInfo(name = "NAME") var name : String = "",
         @ColumnInfo(name = "DESCRIPTION") var description : String = "",
-        @ColumnInfo(name = "TYPE") var type : String = ""
+        @ColumnInfo(name = "TYPE") var type : String = "",
+        @ColumnInfo(name = "IMAGEURI") var imageUri : String = ""
+
 ) {
         @ColumnInfo(name = "id")
         @PrimaryKey(autoGenerate = true) var id: Long = 0

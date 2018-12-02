@@ -29,6 +29,18 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <ImageView
+                android:id="@+id/select_image"
+                android:layout_width="match_parent"
+                android:src="@drawable/recipe_empty_state_icon"
+                android:layout_height="150dp" />
+
+            <Button
+                android:id="@+id/pick_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_image"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
