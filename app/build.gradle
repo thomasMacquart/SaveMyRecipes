@@ -62,8 +62,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
 
     //test
-    androidTestImplementation 'org.mockito:mockito-android:2.+'
-    testImplementation "org.mockito:mockito-core:2.+"
+    androidTestImplementation "org.mockito:mockito-android:${versions.mockito}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
@@ -89,6 +90,9 @@ dependencies {
     implementation "com.github.gturedi:stateful-layout:1.2.1"
 
     implementation "androidx.cardview:cardview:1.0.0"
+
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
 
 }
 
