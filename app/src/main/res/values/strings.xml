@@ -9,5 +9,5 @@
     <string name="starter_type">Starter</string>
     <string name="main_type">Main</string>
     <string name="dessert_type">Dessert</string>
-    <string name="choose_image">Pick image</string>
+    <string name="take_picture">Take picture</string>
 </resources>

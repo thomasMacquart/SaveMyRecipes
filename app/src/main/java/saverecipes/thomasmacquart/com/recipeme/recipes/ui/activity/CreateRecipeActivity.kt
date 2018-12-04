@@ -18,6 +18,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import kotlinx.android.synthetic.main.create_recipe_activity.*
+import saverecipes.thomasmacquart.com.recipeme.BuildConfig
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
@@ -43,7 +44,6 @@ fun Context.UserDetailIntent(): Intent {
 class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
     companion object {
-        private const val REQUEST_SELECT_IMAGE = 0
         private const val REQUEST_TAKE_PHOTO = 1
     }
 
@@ -146,7 +146,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                             this,
-                            "saverecipes.thomasmacquart.com.recipeme.provider",
+                            "${BuildConfig.APPLICATION_ID}.provider",
                             it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
