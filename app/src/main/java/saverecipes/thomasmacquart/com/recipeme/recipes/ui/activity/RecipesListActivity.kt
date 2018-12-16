@@ -47,8 +47,6 @@ class RecipesListActivity : BaseViewModelActivity<RecipeListViewModel>() {
         subscribe()
 
         viewModel.loadRecipes()
-
-
     }
 
     private fun subscribe() {
