@@ -6,9 +6,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
@@ -38,19 +40,38 @@ class RecipeDetailsViewModelTest {
         viewModel = RecipeDetailsViewModel(useCase)
     }
 
+    @Nested
+    @DisplayName("Test getRecipes")
+    inner class TestGetRecipe {
 
-    @Test
-    fun getRecipe() {
-        viewModel = RecipeDetailsViewModel(useCase)
-        val uiModel = RecipeDetailsUiModel("test", "test", "test")
+        @Test
+        fun `Given a recipe then onSuccess state is returned`() {
+            viewModel = RecipeDetailsViewModel(useCase)
+            val uiModel = RecipeDetailsUiModel("test", "test", "test")
 
-        Mockito.`when`(useCase.getRecipe(1)).thenReturn(Single.just(uiModel))
-        val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
-        viewModel.getRecipe(1)
-        verify(useCase).getRecipe(1)
+            Mockito.`when`(useCase.getRecipe(1)).thenReturn(Single.just(uiModel))
+            val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
+            viewModel.getRecipe(1)
+            verify(useCase).getRecipe(1)
 
-        assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(uiModel)), recipeDetailsStatus.observedValues)
+            assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(uiModel)), recipeDetailsStatus.observedValues)
+        }
+
+        @Test
+        fun `Given a error then on error state is return is returned`() {
+            viewModel = RecipeDetailsViewModel(useCase)
+            val uiModel = RecipeDetailsUiModel("test", "test", "test")
+
+            Mockito.`when`(useCase.getRecipe(1)).thenReturn(Single.error(Throwable("oops")))
+            val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
+            viewModel.getRecipe(1)
+            verify(useCase).getRecipe(1)
+
+            assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnError(ArgumentMatchers.anyString())), recipeDetailsStatus.observedValues)
+        }
     }
+
+
 
 
 }

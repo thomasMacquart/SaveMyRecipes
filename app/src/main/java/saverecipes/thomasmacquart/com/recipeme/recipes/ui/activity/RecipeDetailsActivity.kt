@@ -53,7 +53,7 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
         viewModel.recipeObservableUi.observe(this, Observer { recipe ->
             when (recipe) {
                 is RecipeDetailsState.OnSuccess -> populateUi(recipe.recipeModel)
-                is RecipeDetailsState.OnError -> state_layout.showError(recipe.error.message) {doRequest()}
+                is RecipeDetailsState.OnError -> state_layout.showError(recipe.error) {doRequest()}
                 is RecipeDetailsState.Loading -> state_layout.showLoading()
             }.exhaustive
         })

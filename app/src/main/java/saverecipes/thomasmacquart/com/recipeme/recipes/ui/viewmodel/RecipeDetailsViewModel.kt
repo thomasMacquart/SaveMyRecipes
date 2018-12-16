@@ -27,12 +27,12 @@ class RecipeDetailsViewModel @Inject constructor(private val usecase : IRecipeDe
     }
 
     private fun onError(error : Throwable) {
-        recipeObservableUi.value = RecipeDetailsState.OnError(error)
+        recipeObservableUi.value = RecipeDetailsState.OnError("oops")
     }
 }
 
 sealed class RecipeDetailsState {
     data class OnSuccess(val recipeModel : RecipeDetailsUiModel) : RecipeDetailsState()
-    data class OnError(val error: Throwable) : RecipeDetailsState()
+    data class OnError(val error: String) : RecipeDetailsState()
     object  Loading : RecipeDetailsState()
 }
