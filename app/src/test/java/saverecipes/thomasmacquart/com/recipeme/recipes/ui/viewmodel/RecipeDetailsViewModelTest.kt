@@ -1,56 +1,55 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
-import androidx.lifecycle.Observer
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.*
-import org.mockito.Mockito.times
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import saverecipes.thomasmacquart.com.recipeme.recipes.InstantTaskExecutorExtension
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeDetailsUseCase
+import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
+import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.IRecipeDetailsUserCase
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.testObserver
 
-@ExtendWith(InstantTaskExecutorExtension::class) //TODO : use rule instead when supported by junit5
 class RecipeDetailsViewModelTest {
 
+    @get:Rule
+    val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
-    @Mock
-    private lateinit var useCase: RecipeDetailsUseCase
-    @Mock
-    private lateinit var observerState: Observer<RecipeDetailsState>
+    @get:Rule
+    val taskExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val rxSchedulerRule = RxSchedulerRule()
+
+    private var useCase: IRecipeDetailsUserCase = mock(IRecipeDetailsUserCase::class.java)
 
     private lateinit var viewModel: RecipeDetailsViewModel
 
-    @BeforeEach
+    @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = RecipeDetailsViewModel(useCase, Schedulers.trampoline(), Schedulers.trampoline())
+        viewModel = RecipeDetailsViewModel(useCase)
     }
 
 
     @Test
-    @Disabled //TODO : find workaround to make core test lib work with junit5
     fun getRecipe() {
+        viewModel = RecipeDetailsViewModel(useCase)
         val uiModel = RecipeDetailsUiModel("test", "test", "test")
 
-        Mockito.`when`(useCase.getRecipe(ArgumentMatchers.anyLong())).thenReturn(Single.just(uiModel))
-        viewModel.recipeObservableUi.observeForever { observerState }
+        Mockito.`when`(useCase.getRecipe(1)).thenReturn(Single.just(uiModel))
+        val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
         viewModel.getRecipe(1)
         verify(useCase).getRecipe(1)
 
-        /*val argumentCaptor = ArgumentCaptor.forClass(RecipeDetailsState::class.java)
-        val expectedSucessState = RecipeDetailsState.OnSuccess(uiModel)
-        argumentCaptor.run {
-            verify(observerState, times(2)).onChanged(capture())
-            //assertEquals(expectedSucessState, value)
-        }*/
-
-        verify(observerState).onChanged(RecipeDetailsState.OnSuccess(uiModel))
+        assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(uiModel)), recipeDetailsStatus.observedValues)
     }
 
 

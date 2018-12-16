@@ -3,9 +3,9 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 import io.reactivex.Single
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
 
-open class RecipeDetailsUseCase(private val recipeRepo: RecipeRepo) {
+open class RecipeDetailsUseCase(private val recipeRepo: RecipeRepo) : IRecipeDetailsUserCase {
 
-    open fun getRecipe(id : Long) : Single<RecipeDetailsUiModel> {
+    override fun getRecipe(id : Long) : Single<RecipeDetailsUiModel> {
         return recipeRepo.getRecipe(id).map { it -> RecipeDetailsUiModel(it.name, it.type, it.description, it.imageUri) }
     }
 }

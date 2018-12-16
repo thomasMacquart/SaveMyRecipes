@@ -3,19 +3,22 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.IRecipeDetailsUserCase
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeDetailsUseCase
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
 import javax.inject.Inject
 
-class RecipeDetailsViewModel @Inject constructor(private val usecase : RecipeDetailsUseCase, val subscribeOnScheduler: Scheduler, val observeOnScheduler: Scheduler) : ViewModel() {
+class RecipeDetailsViewModel @Inject constructor(private val usecase : IRecipeDetailsUserCase) : ViewModel() {
 
     val recipeObservableUi : MutableLiveData<RecipeDetailsState> = MutableLiveData()
 
     fun getRecipe(id : Long) {
         recipeObservableUi.value = RecipeDetailsState.Loading
         usecase.getRecipe(id)
-                .subscribeOn(subscribeOnScheduler)
-                .observeOn(observeOnScheduler)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onRecipeReceived, this::onError)
     }
 

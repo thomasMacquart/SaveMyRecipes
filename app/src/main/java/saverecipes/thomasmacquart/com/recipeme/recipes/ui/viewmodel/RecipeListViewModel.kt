@@ -15,10 +15,10 @@ import javax.inject.Inject
  */
 open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo) : ViewModel() {
 
-    val recipes: MutableLiveData<RecipeListState> = MutableLiveData<RecipeListState>()
+    val recipes: MutableLiveData<RecipeListState> = MutableLiveData()
 
     open fun loadRecipes()  {
-        recipes.value = LoadingState()
+        recipes.value = LoadingState
         repo.getRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -27,7 +27,7 @@ open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo
 
     private fun onRecipesReceived(recipesList : List<Recipe>) {
         if (recipesList.isEmpty()) {
-            recipes.value = EmptyState()
+            recipes.value = EmptyState
         } else {
             recipes.value = SuccessState(recipesList)
         }
@@ -42,6 +42,6 @@ open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo
 sealed class RecipeListState {
     data class SuccessState(val recipes : List<Recipe>) : RecipeListState()
     data class ErrorState(val message : String) : RecipeListState()
-    class EmptyState : RecipeListState()
-    class LoadingState : RecipeListState()
+    object EmptyState : RecipeListState()
+    object LoadingState : RecipeListState()
 }
