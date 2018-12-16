@@ -67,7 +67,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
                     android:text="@string/recipes_type_create_recipe"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
 
                 <Spinner
@@ -84,6 +84,7 @@
 
                     <EditText
                         android:id="@+id/recipe_desciption_input"
+                        android:inputType="text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColor="@color/black" />

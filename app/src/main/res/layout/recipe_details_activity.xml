@@ -6,67 +6,61 @@
     android:orientation="vertical"
     android:padding="@dimen/space2">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="200dp"
+        android:background="#DEDEDE">
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/detail_image"
+            android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:background="#DEDEDE">
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/recipe_empty_state_icon" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/detail_image"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/recipe_empty_state_icon" />
-        </FrameLayout>
+    <com.gturedi.views.StatefulLayout
+        android:id="@+id/state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <com.gturedi.views.StatefulLayout
-            android:id="@+id/state_layout"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/recipe_title"
+                    style="@style/SaveMyRecipe.Text.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space3" />
 
-                    <TextView
-                        android:id="@+id/recipe_title"
-                        style="@style/SaveMyRecipe.Text.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space3" />
+                <TextView
+                    android:id="@+id/recipe_type"
+                    style="@style/SaveMyRecipe.Text.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space2" />
 
-                    <TextView
-                        android:id="@+id/recipe_type"
-                        style="@style/SaveMyRecipe.Text.Subtitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space2" />
+                <TextView
+                    android:id="@+id/recipe_description"
+                    style="@style/SaveMyRecipe.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space1" />
 
-                    <TextView
-                        android:id="@+id/recipe_description"
-                        style="@style/SaveMyRecipe.Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space1" />
+            </LinearLayout>
 
-                </LinearLayout>
+        </ScrollView>
 
-            </ScrollView>
+    </com.gturedi.views.StatefulLayout>
 
-        </com.gturedi.views.StatefulLayout>
-
-    </LinearLayout>
 
 </LinearLayout>
