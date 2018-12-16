@@ -89,7 +89,7 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
     }
 
     private fun goToCreateRecipe() {
-        startActivity(this.UserDetailIntent())
+        startActivity(CreateRecipeActivity.getStartIntent(this))
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

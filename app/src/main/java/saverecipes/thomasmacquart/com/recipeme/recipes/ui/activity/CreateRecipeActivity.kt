@@ -36,15 +36,14 @@ import javax.inject.Inject
 /**
  * Created by thomas.macquart on 21/03/2018.
  */
-
-fun Context.UserDetailIntent(): Intent {
-    return Intent(this, CreateRecipeActivity::class.java)
-}
-
 class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
     companion object {
         private const val REQUEST_TAKE_PHOTO = 1
+
+        fun getStartIntent(context: Context) : Intent {
+            return Intent(context, CreateRecipeActivity::class.java)
+        }
     }
 
     @Inject
