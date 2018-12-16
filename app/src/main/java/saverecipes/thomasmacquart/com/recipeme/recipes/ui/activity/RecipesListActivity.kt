@@ -28,14 +28,16 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
     @Inject
     lateinit var activityDispatchingAndroidInjector : DispatchingAndroidInjector<Activity>
 
-    private lateinit var recipesAdapter : RecipesListAdapter
+    private val recipesAdapter : RecipesListAdapter by lazy { RecipesListAdapter {
+        startActivity(RecipeDetailsActivity.getStartIntent(this@RecipesListActivity, it.id))
+    } }
     private lateinit var recipesLayoutManager: RecyclerView.LayoutManager
     @Inject
     lateinit var factory : ViewModelFactory<RecipeListViewModel>
 
     private lateinit var model : RecipeListViewModel
 
-    fun createViewModel(): RecipeListViewModel {
+    private fun createViewModel(): RecipeListViewModel {
         return ViewModelProviders.of(this, factory)
                 .get(RecipeListViewModel::class.java!!)
     }
@@ -52,9 +54,6 @@ class RecipesListActivity : AppCompatActivity(), HasActivityInjector {
         model = createViewModel()
 
         recipesLayoutManager = LinearLayoutManager(this)
-        recipesAdapter = RecipesListAdapter {
-            startActivity(RecipeDetailsActivity.getStartIntent(this@RecipesListActivity, it.id))
-        }
 
         recipes_list.apply {
             setHasFixedSize(true)

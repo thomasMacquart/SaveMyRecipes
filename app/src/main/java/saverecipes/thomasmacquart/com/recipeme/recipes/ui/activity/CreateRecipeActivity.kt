@@ -158,7 +158,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
 
     fun createViewModel(): CreateRecipeViewModel {
         return ViewModelProviders.of(this, factory)
-                .get(CreateRecipeViewModel::class.java!!)
+                .get(CreateRecipeViewModel::class.java)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {
