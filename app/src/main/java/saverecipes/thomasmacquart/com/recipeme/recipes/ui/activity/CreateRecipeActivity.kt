@@ -20,6 +20,7 @@ import dagger.android.HasActivityInjector
 import kotlinx.android.synthetic.main.create_recipe_activity.*
 import saverecipes.thomasmacquart.com.recipeme.BuildConfig
 import saverecipes.thomasmacquart.com.recipeme.R
+import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelActivity
 import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
@@ -36,7 +37,7 @@ import javax.inject.Inject
 /**
  * Created by thomas.macquart on 21/03/2018.
  */
-class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
+class CreateRecipeActivity : BaseViewModelActivity<CreateRecipeViewModel>() {
 
     companion object {
         private const val REQUEST_TAKE_PHOTO = 1
@@ -46,35 +47,26 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
         }
     }
 
-    @Inject
-    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    @Inject
-    lateinit var factory: ViewModelFactory<CreateRecipeViewModel>
-
-    lateinit var model: CreateRecipeViewModel
-
     private var mCurrentPhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_recipe_activity)
 
-        model = createViewModel()
-
         val adapter = ArrayAdapter.createFromResource(this,
                 R.array.meal_types, android.R.layout.simple_spinner_item)
-// Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-// Apply the adapter to the spinner
-        recipe_type_spinner.setAdapter(adapter)
+        // Apply the adapter to the spinner
+        recipe_type_spinner.adapter = adapter
         recipe_type_spinner.setSelection(0)
 
         take_photo.setOnClickListener { takePhoto() }
 
         validate_recipe_button.setOnClickListener {
-            model.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString())))
+            viewModel.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString())))
+
+            //TODO start activity from call back by viewmodel. This intention is useless otherwise
             startActivity(SuccessActivity.Companion.getStartIntent(this))
             setResult(Activity.RESULT_OK)
             finish()
@@ -84,7 +76,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
     }
 
     private fun observe() {
-        model.uiObservable.observe(this, androidx.lifecycle.Observer {
+        viewModel.uiObservable.observe(this, androidx.lifecycle.Observer {
             when(it) {
                 is CreateRecipeState.ShowError -> view_state.showError(it.error) {}
             }.exhaustive
@@ -156,7 +148,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
     }
 
 
-    fun createViewModel(): CreateRecipeViewModel {
+    override fun createViewModel(): CreateRecipeViewModel {
         return ViewModelProviders.of(this, factory)
                 .get(CreateRecipeViewModel::class.java)
     }
