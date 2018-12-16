@@ -18,13 +18,11 @@ abstract class BaseViewModelActivity<VM : ViewModel> : AppCompatActivity(), HasA
     @Inject
     lateinit var factory : ViewModelFactory<VM>
 
-    lateinit var viewModel : VM
+    val viewModel : VM by lazy { createViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-
-        viewModel = createViewModel()
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {
