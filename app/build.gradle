@@ -68,12 +68,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
-    //gms
-    implementation 'com.google.firebase:firebase-core:16.0.6'
-
-    //firebase
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin_version}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
@@ -104,7 +98,3 @@ kapt {
 repositories {
     mavenCentral()
 }
-
-
-
-apply plugin: 'com.google.gms.google-services'
