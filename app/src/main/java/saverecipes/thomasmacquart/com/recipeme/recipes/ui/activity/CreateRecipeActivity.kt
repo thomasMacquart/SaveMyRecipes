@@ -87,7 +87,6 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
     private fun observe() {
         model.uiObservable.observe(this, androidx.lifecycle.Observer {
             when(it) {
-                is CreateRecipeState.ShowImage -> showImage(it.uri)
                 is CreateRecipeState.ShowError -> view_state.showError(it.error) {}
             }.exhaustive
         })
@@ -109,7 +108,7 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
             REQUEST_TAKE_PHOTO -> {
                 if (resultCode == RESULT_OK) {
                     //val imageBitmap = data?.extras?.get("data") as Bitmap
-                    model.sendIntention(CreateRecipesIntentions.ImageSelected(mCurrentPhotoPath))
+                    mCurrentPhotoPath?.let { showImage(it) }
                 }
 
             }
@@ -140,7 +139,8 @@ class CreateRecipeActivity : AppCompatActivity(), HasActivityInjector {
                     createImageFile()
                 } catch (ex: IOException) {
                     // Error occurred while creating the File
-                    return@also model.sendIntention(intention = CreateRecipesIntentions.HandleError)
+                    view_state.showError("something went wrong") {}
+                    null
                 }
                 // Continue only if the File was successfully created
                 photoFile?.also {

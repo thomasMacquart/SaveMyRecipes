@@ -28,24 +28,16 @@ class CreateRecipeViewModel @Inject constructor(private val repo : RecipeRepo) :
 
     fun sendIntention(intention : CreateRecipesIntentions) {
         when (intention) {
-            is CreateRecipesIntentions.ImageSelected -> {
-                uri = intention.uri
-                uiObservable.value = CreateRecipeState.ShowImage(intention.uri ?: "")
-            }
             is CreateRecipesIntentions.CreateRecipe -> createRecipe(intention.recipe)
-            is CreateRecipesIntentions.HandleError -> uiObservable.value = CreateRecipeState.ShowError("Something went wrong")
         }.exhaustive
     }
 
 }
 
 sealed class CreateRecipeState {
-    data class ShowImage(val uri : String) : CreateRecipeState()
     data class ShowError(val error : String) : CreateRecipeState()
 }
 
 sealed class CreateRecipesIntentions {
-    data class ImageSelected(val uri : String?) : CreateRecipesIntentions()
     data class CreateRecipe(val recipe : Recipe) : CreateRecipesIntentions()
-    object HandleError : CreateRecipesIntentions()
 }
