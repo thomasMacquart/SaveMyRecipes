@@ -22,7 +22,7 @@ class RecipesListAdapter(private val listener: (Recipe) -> Unit) : RecyclerView.
     var items : List<Recipe> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        var view : View = LayoutInflater.from(parent.context).inflate(R.layout.recipe_row_layout, parent, false)
+        val view : View = LayoutInflater.from(parent.context).inflate(R.layout.recipe_row_layout, parent, false)
         return RecipeViewHolder(view)
     }
 

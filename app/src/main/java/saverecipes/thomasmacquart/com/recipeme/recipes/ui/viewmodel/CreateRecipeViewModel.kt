@@ -3,6 +3,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
@@ -16,14 +17,13 @@ import javax.inject.Inject
 class CreateRecipeViewModel @Inject constructor(private val repo : RecipeRepo) : ViewModel(){
 
     val uiObservable = MutableLiveData<CreateRecipeState>()
-    private var uri : String? = null
+    private val disposable = CompositeDisposable()
 
     private fun createRecipe(recipe : Recipe)  {
-        recipe.imageUri = uri ?: ""
-        repo.addRecipe(recipe)
+        disposable.add(repo.addRecipe(recipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe())
     }
 
     fun sendIntention(intention : CreateRecipesIntentions) {
@@ -32,6 +32,10 @@ class CreateRecipeViewModel @Inject constructor(private val repo : RecipeRepo) :
         }.exhaustive
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        disposable.dispose()
+    }
 }
 
 sealed class CreateRecipeState {

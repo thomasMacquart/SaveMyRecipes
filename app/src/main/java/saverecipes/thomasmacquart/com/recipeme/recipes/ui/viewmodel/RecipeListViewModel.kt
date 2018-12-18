@@ -3,6 +3,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
@@ -16,13 +17,14 @@ import javax.inject.Inject
 open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo) : ViewModel() {
 
     val recipes: MutableLiveData<RecipeListState> = MutableLiveData()
+    private val disposable  = CompositeDisposable()
 
     open fun loadRecipes()  {
         recipes.value = LoadingState
-        repo.getRecipes()
+        disposable.add(repo.getRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onRecipesReceived, this::onError)
+                .subscribe(this::onRecipesReceived, this::onError))
     }
 
     private fun onRecipesReceived(recipesList : List<Recipe>) {
@@ -36,6 +38,11 @@ open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo
     private fun onError(error: Throwable) {
         //todo localize it
         recipes.value = ErrorState("something went wrong")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.dispose()
     }
 }
 

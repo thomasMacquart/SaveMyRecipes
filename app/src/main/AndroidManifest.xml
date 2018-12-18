@@ -25,14 +25,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
-        <activity android:name=".recipes.ui.activity.RecipesListActivity" android:screenOrientation="portrait">
+        <activity android:name=".recipes.ui.activity.RecipesListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".recipes.ui.activity.CreateRecipeActivity" android:screenOrientation="portrait">
+        <activity android:name=".recipes.ui.activity.CreateRecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -43,8 +43,8 @@
                 <!-- note that the leading "/" is required for pathPrefix-->
             </intent-filter>
         </activity>
-        <activity android:name=".recipes.ui.activity.RecipeDetailsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".recipes.ui.activity.SuccessActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".recipes.ui.activity.RecipeDetailsActivity"/>
+        <activity android:name=".recipes.ui.activity.SuccessActivity"/>
     </application>
 
 </manifest>

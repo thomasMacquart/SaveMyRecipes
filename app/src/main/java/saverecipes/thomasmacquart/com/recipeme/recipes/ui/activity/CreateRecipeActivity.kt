@@ -64,7 +64,7 @@ class CreateRecipeActivity : BaseViewModelActivity<CreateRecipeViewModel>() {
         take_photo.setOnClickListener { takePhoto() }
 
         validate_recipe_button.setOnClickListener {
-            viewModel.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString())))
+            viewModel.sendIntention(CreateRecipesIntentions.CreateRecipe(Recipe(recipe_title_input.text.toString(), recipe_desciption_input.text.toString(), recipe_type_spinner.selectedItem.toString(), mCurrentPhotoPath ?: "")))
 
             //TODO start activity from call back by viewmodel. This intention is useless otherwise
             startActivity(SuccessActivity.Companion.getStartIntent(this))
