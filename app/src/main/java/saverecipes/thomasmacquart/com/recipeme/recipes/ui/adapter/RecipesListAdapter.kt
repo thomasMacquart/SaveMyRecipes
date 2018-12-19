@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.NonNull
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.recipe_row_layout.view.*
@@ -17,18 +20,26 @@ import java.io.File
 /**
  * Created by thomas.macquart on 06/01/2018.
  */
-class RecipesListAdapter(private val listener: (Recipe) -> Unit) : RecyclerView.Adapter<RecipesListAdapter.RecipeViewHolder>() {
+class RecipesListAdapter(private val listener: (Recipe) -> Unit) : ListAdapter<Recipe, RecipesListAdapter.RecipeViewHolder>(DIFF_CALLBACK) {
 
-    var items : List<Recipe> = listOf()
+    companion object {
+        val  DIFF_CALLBACK : DiffUtil.ItemCallback<Recipe> = object : DiffUtil.ItemCallback<Recipe>() {
+            override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view : View = LayoutInflater.from(parent.context).inflate(R.layout.recipe_row_layout, parent, false)
         return RecipeViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) = holder.bind(items[position], listener)
-
-    override fun getItemCount(): Int = items.size
+    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) = holder.bind(getItem(position), listener)
 
 
     class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
