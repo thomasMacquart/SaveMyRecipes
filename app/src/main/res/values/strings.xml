@@ -10,4 +10,5 @@
     <string name="main_type">Main</string>
     <string name="dessert_type">Dessert</string>
     <string name="take_picture">Take picture</string>
+    <string name="navigation_tab_local_recipes">Your recipes</string>
 </resources>
