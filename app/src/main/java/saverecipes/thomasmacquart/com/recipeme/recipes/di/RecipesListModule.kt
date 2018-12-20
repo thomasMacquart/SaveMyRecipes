@@ -10,7 +10,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListVi
  * Created by thomas.macquart on 13/02/2018.
  */
 @Module
-class RecipesListActivityModule {
+class RecipesListModule {
     @Provides
     fun provideModelView(repoImpl : RecipeRepoImpl): ViewModelFactory<RecipeListViewModel>
             = ViewModelFactory(RecipeListViewModel(repoImpl))

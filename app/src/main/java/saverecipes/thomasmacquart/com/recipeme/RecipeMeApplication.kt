@@ -2,21 +2,26 @@ package saverecipes.thomasmacquart.com.recipeme
 
 import android.app.Activity
 import android.app.Application
+import androidx.fragment.app.Fragment
 import androidx.room.Room
 import saverecipes.thomasmacquart.com.recipeme.core.AppDatabase
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import dagger.android.support.HasSupportFragmentInjector
 import saverecipes.thomasmacquart.com.recipeme.core.di.DaggerAppComponent
 import javax.inject.Inject
 
 /**
  * Created by thomas.macquart on 01/11/2017.
  */
-class RecipeMeApplication : Application(), HasActivityInjector {
+class RecipeMeApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+    @Inject
+    lateinit var fragmentInjector : DispatchingAndroidInjector<Fragment>
 
     override fun onCreate() {
         super.onCreate()
@@ -32,5 +37,9 @@ class RecipeMeApplication : Application(), HasActivityInjector {
 
     override fun activityInjector(): AndroidInjector<Activity> {
         return activityDispatchingAndroidInjector
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
     }
 }

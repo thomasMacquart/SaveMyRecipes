@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.CreateRecipeActivityModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipeDetailsModule
-import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesListActivityModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesListModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipesListActivity
@@ -16,7 +16,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipesListAc
 @Module
 abstract class ActivityBuilder {
 
-    @ContributesAndroidInjector(modules = arrayOf(RecipesListActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(RecipesListModule::class))
     abstract fun bindRecipesListActivity(): RecipesListActivity
 
     @ContributesAndroidInjector(modules = arrayOf(CreateRecipeActivityModule::class))
