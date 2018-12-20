@@ -1,4 +1,4 @@
-package saverecipes.thomasmacquart.com.recipeme.recipes.ui
+package saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

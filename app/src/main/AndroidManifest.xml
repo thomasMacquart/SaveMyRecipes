@@ -25,7 +25,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
-        <activity android:name=".recipes.ui.activity.RecipesListActivity">
+        <activity android:name=".recipes.ui.activity.MainNavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

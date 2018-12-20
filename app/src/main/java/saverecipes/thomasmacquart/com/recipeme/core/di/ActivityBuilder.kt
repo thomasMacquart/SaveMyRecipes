@@ -7,7 +7,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipeDetailsModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesListModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipesListActivity
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.MainNavigationActivity
 
 
 /**
@@ -17,7 +17,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipesListAc
 abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = arrayOf(RecipesListModule::class))
-    abstract fun bindRecipesListActivity(): RecipesListActivity
+    abstract fun bindRecipesListActivity(): MainNavigationActivity
 
     @ContributesAndroidInjector(modules = arrayOf(CreateRecipeActivityModule::class))
     abstract fun bindCreateRecipeActivity(): CreateRecipeActivity
