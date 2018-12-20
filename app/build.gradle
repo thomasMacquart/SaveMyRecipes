@@ -90,6 +90,8 @@ dependencies {
 
     //lottie
     implementation "com.airbnb.android:lottie:${versions.lottie}"
+
+    implementation libraries.retrofit
 }
 
 kapt {

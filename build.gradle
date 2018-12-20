@@ -13,6 +13,10 @@ buildscript {
             'lottie'        : '2.8.0'
     ]
 
+    ext.libraries = [
+        retrofit : "com.squareup.retrofit2:retrofit:2.5.0"
+    ]
+
 
     repositories {
         google()
