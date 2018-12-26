@@ -10,7 +10,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
-internal class RecipeDetailsUseCaseTest {
+internal class  RecipeDetailsUseCaseTest {
 
     @Mock
     private lateinit var repo: RecipeRepo

@@ -2,16 +2,23 @@ package saverecipes.thomasmacquart.com.recipeme.core.di
 
 import dagger.Module
 import dagger.Provides
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipeDao
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+import java.text.DateFormat
 
-private const val BASE_URL = "https://example"
+
+private const val BASE_URL = "http://www.mocky.io/"
 
 @Module
-abstract class NetworkModule {
+class NetworkModule {
 
     @Provides
     fun providesRetrofit(okHttpClient: OkHttpClient) =
@@ -29,7 +36,11 @@ abstract class NetworkModule {
             level = HttpLoggingInterceptor.Level.BODY
         }
         return OkHttpClient.Builder()
-                .addInterceptor(logging)
+                .addInterceptor(logging) //TODO : enable only for debug
+                .connectionSpecs(mutableListOf(ConnectionSpec.CLEARTEXT))
                 .build()
     }
+
+    @Provides
+    fun providesDailyRecipeDao(retrofit: Retrofit) : DailyRecipeDao = retrofit.create(DailyRecipeDao::class.java)
 }
