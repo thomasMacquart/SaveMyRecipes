@@ -2,6 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -22,5 +23,7 @@ interface RecipeDao {
     fun getRecipes() : Flowable<List<Recipe>>
     @Query("select * from Recipe where id = :id")
     fun findRecipeById(id : Long) : Single<Recipe>
+    @Delete
+    fun deleteRecipe(recipe: Recipe)
 
 }
