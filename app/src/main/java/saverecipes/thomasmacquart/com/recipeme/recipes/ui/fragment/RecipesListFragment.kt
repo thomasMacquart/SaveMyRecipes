@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.recipes_list_fragment.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelFragment
@@ -16,6 +15,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAdapter
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.view.ItemDecorationRecipesColumns
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
 
@@ -31,7 +31,6 @@ class RecipesListFragment : BaseViewModelFragment<RecipeListViewModel>() {
     private val recipesAdapter : RecipesListAdapter by lazy { RecipesListAdapter {
         startActivity(activity?.let { it1 -> RecipeDetailsActivity.getStartIntent(it1, it.id) })
     } }
-    private lateinit var recipesLayoutManager: RecyclerView.LayoutManager
 
     override fun createViewModel(): RecipeListViewModel {
         return ViewModelProviders.of(this, factory)
@@ -48,11 +47,20 @@ class RecipesListFragment : BaseViewModelFragment<RecipeListViewModel>() {
         create_recipe_button.setOnClickListener {
             goToCreateRecipe()
         }
-        recipesLayoutManager = LinearLayoutManager(activity)
+        val lm = GridLayoutManager(activity, 2)
+        lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position == 0) 2 else 1
+            }
+        }
+
+        recipes_list.addItemDecoration(ItemDecorationRecipesColumns(
+                resources.getDimensionPixelSize(R.dimen.recipes_separation),
+                2))
 
         recipes_list.apply {
             setHasFixedSize(true)
-            layoutManager = recipesLayoutManager
+            layoutManager = lm
             adapter = recipesAdapter
         }
 
