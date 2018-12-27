@@ -9,15 +9,7 @@ import javax.inject.Inject
 /**
  * Created by thomas.macquart on 27/02/2018.
  */
-open class RecipeRepoImpl: RecipeRepo{
-
-    var mDao: RecipeDao
-
-
-    @Inject constructor(dao: RecipeDao) {
-        mDao = dao
-    }
-
+open class RecipeRepoImpl @Inject constructor(private val mDao: RecipeDao): RecipeRepo{
 
     override fun getRecipes(): Flowable<List<Recipe>> {
         return mDao.getRecipes()
@@ -29,5 +21,9 @@ open class RecipeRepoImpl: RecipeRepo{
 
     override fun getRecipe(id : Long) : Single<Recipe> {
         return mDao.findRecipeById(id)
+    }
+
+    override fun deleteRecipe(recipe: Recipe) : Completable {
+        return Completable.fromAction { mDao.deleteRecipe(recipe)}
     }
 }

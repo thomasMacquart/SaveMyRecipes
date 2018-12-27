@@ -19,4 +19,9 @@ interface RecipeRepo {
      * get recipe by its id
      */
     fun getRecipe(id : Long) : Single<Recipe>
+
+    /**
+     * delete recipe from db
+     */
+    fun deleteRecipe(recipe: Recipe) : Completable
 }
