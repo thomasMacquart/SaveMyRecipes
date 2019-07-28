@@ -8,11 +8,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipeDao
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
-import com.google.gson.Gson
-import java.text.DateFormat
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipeService
+import javax.inject.Singleton
 
 
 private const val BASE_URL = "http://www.mocky.io/"
@@ -21,6 +18,7 @@ private const val BASE_URL = "http://www.mocky.io/"
 class NetworkModule {
 
     @Provides
+    @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient) =
             Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -31,6 +29,7 @@ class NetworkModule {
 
 
     @Provides
+    @Singleton
     fun providesOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -42,5 +41,5 @@ class NetworkModule {
     }
 
     @Provides
-    fun providesDailyRecipeDao(retrofit: Retrofit) : DailyRecipeDao = retrofit.create(DailyRecipeDao::class.java)
+    fun providesDailyRecipeDao(retrofit: Retrofit) : DailyRecipeService = retrofit.create(DailyRecipeService::class.java)
 }

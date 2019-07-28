@@ -3,18 +3,16 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipeDao
+import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipeService
 
 internal class DailyRecipesRepoTest {
 
     @Mock
-    lateinit var dao : DailyRecipeDao
+    lateinit var service : DailyRecipeService
 
     lateinit var repo : DailyRecipesRepo
 
@@ -22,7 +20,7 @@ internal class DailyRecipesRepoTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        repo = DailyRecipesRepo(dao)
+        repo = DailyRecipesRepo(service)
     }
 
     @Test
@@ -31,7 +29,7 @@ internal class DailyRecipesRepoTest {
         val dailyRecipe = DailyRecipe("test", "test", "test")
         list.add(dailyRecipe)
 
-        Mockito.`when`(dao.getDailyRecipes()).thenReturn(Single.just(list))
+        Mockito.`when`(service.getDailyRecipes()).thenReturn(Single.just(list))
 
         val resultList = mutableListOf<Recipe>()
         val recipe = Recipe("test", "test", "test")
