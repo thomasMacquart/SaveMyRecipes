@@ -42,11 +42,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     //compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'androidx.appcompat:appcompat:1.0.2'
 
     //room
-    implementation 'androidx.room:room-runtime:2.1.0-alpha06'
+    implementation 'androidx.room:room-runtime:2.1.0'
     annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha06'
     kapt 'androidx.room:room-compiler:2.1.0-alpha06'
     implementation 'androidx.room:room-rxjava2:2.1.0-alpha06'
