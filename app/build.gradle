@@ -29,6 +29,10 @@ android {
     lintOptions {
         baseline file("lint-baseline.xml")
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {

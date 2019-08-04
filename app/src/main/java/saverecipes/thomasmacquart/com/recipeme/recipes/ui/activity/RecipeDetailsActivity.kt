@@ -3,6 +3,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -10,6 +11,7 @@ import kotlinx.android.synthetic.main.recipe_details_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelActivity
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
+import saverecipes.thomasmacquart.com.recipeme.databinding.RecipeDetailsActivityBinding
 import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeDetailsState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeDetailsViewModel
@@ -26,10 +28,15 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
         }
     }
 
+    private lateinit var binding : RecipeDetailsActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.recipe_details_activity)
+        binding = DataBindingUtil.setContentView(
+                this, R.layout.recipe_details_activity)
+
+        binding.setLifecycleOwner(this)
 
         observe()
 
@@ -52,9 +59,7 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
 
     private fun populateUi(recipe : RecipeDetailsUiModel) {
         state_layout.showContent()
-        recipe_title.text = recipe.title
-        recipe_type.text = recipe.type
-        recipe_description.text = recipe.description
+        binding.uiModel = recipe
 
         Glide.with(this).load(recipe.uri)
                 .into(detail_image)
