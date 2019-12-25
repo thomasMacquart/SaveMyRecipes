@@ -54,7 +54,7 @@ class DailyRecipesFragment : BaseViewModelFragment<DailyRecipesViewModel>() {
 
                 is DailyRecipesState.ShowRecipes -> {
                     daily_content_state.showContent()
-                    recipesAdapter.submitList(it.recipes)
+                    recipesAdapter.items = it.recipes
                     recipesAdapter.notifyDataSetChanged()
                 }
                 DailyRecipesState.Loading -> daily_content_state.showLoading()

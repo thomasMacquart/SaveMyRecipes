@@ -84,7 +84,8 @@ class RecipesListFragment : BaseViewModelFragment<RecipeListViewModel>() {
     }
 
     private fun updateList(recipes : List<Recipe>) {
-        recipesAdapter.submitList(recipes)
+        recipesAdapter.items = recipes
+        recipesAdapter.notifyDataSetChanged()
     }
 
     private fun goToCreateRecipe() {
