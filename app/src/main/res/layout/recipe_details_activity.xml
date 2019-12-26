@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="uiModel"
-            type="saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel" />
+            name="recipe"
+            type="saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -30,7 +30,7 @@
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="@{uiModel.title}">
+                app:title="@{recipe.name}">
 
                 <!--  Your View that you want to hide on animation -->
                 <ImageView
@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space2"
-                        android:text="@{uiModel.type}" />
+                        android:text="@{recipe.type}" />
 
                     <TextView
                         android:id="@+id/recipe_description"
@@ -83,7 +83,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space1"
-                        android:text="@{uiModel.description}" />
+                        android:text="@{recipe.description}" />
+
+                    <Button
+                        android:id="@+id/recipe_details_delete_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delete"/>
 
                 </LinearLayout>
 

@@ -6,13 +6,12 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.recipe_details_activity.*
 import saverecipes.thomasmacquart.com.recipeme.R
 import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelActivity
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.databinding.RecipeDetailsActivityBinding
-import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeDetailsState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeDetailsViewModel
 
@@ -41,6 +40,10 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
         observe()
 
         doRequest()
+
+        recipe_details_delete_button.setOnClickListener {
+
+        }
     }
 
     private fun doRequest() {
@@ -48,18 +51,18 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
     }
 
     private fun observe() {
-        viewModel.recipeObservableUi.observe(this, Observer { recipe ->
-            when (recipe) {
-                is RecipeDetailsState.OnSuccess -> populateUi(recipe.recipeModel)
-                is RecipeDetailsState.OnError -> state_layout.showError(recipe.error) {doRequest()}
+        viewModel.recipeObservableUi.observe(this, Observer {
+            when (it) {
+                is RecipeDetailsState.OnSuccess -> populateUi(it.recipe)
+                is RecipeDetailsState.OnError -> state_layout.showError(it.error) {doRequest()}
                 is RecipeDetailsState.Loading -> state_layout.showLoading()
             }.exhaustive
         })
     }
 
-    private fun populateUi(recipe : RecipeDetailsUiModel) {
+    private fun populateUi(recipe : Recipe) {
         state_layout.showContent()
-        binding.uiModel = recipe
+        binding.recipe = recipe
     }
 
     override fun createViewModel(): RecipeDetailsViewModel {
