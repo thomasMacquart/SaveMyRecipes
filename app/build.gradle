@@ -70,6 +70,7 @@ dependencies {
     //test
     androidTestImplementation "org.mockito:mockito-android:${versions.mockito}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 

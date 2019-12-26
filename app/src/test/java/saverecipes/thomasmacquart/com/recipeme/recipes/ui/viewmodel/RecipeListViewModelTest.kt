@@ -1,6 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Flowable
 import org.junit.Before
 import org.junit.Rule
@@ -52,7 +53,7 @@ class RecipeListViewModelTest {
     inner class TestGetRecipes {
         @Test
         fun `Given list is empty return empty state`() {
-            Mockito.`when`(repo.getRecipes()).thenReturn(Flowable.just(listOf()))
+            whenever(repo.getRecipes()).thenReturn(Flowable.just(listOf()))
             val recipeListStatus = viewModel.recipes.testObserver()
 
             viewModel.loadRecipes()
@@ -66,7 +67,7 @@ class RecipeListViewModelTest {
             val list = mutableListOf<Recipe>()
             val recipe = mock(Recipe::class.java)
             list.add(recipe)
-            Mockito.`when`(repo.getRecipes()).thenReturn(Flowable.just(list))
+            whenever(repo.getRecipes()).thenReturn(Flowable.just(list))
             val recipeListStatus = viewModel.recipes.testObserver()
 
             viewModel.loadRecipes()
@@ -77,7 +78,7 @@ class RecipeListViewModelTest {
 
         @Test
         fun `Given repo return error return error state`() {
-            Mockito.`when`(repo.getRecipes()).thenReturn(Flowable.error(Throwable("oops")))
+            whenever(repo.getRecipes()).thenReturn(Flowable.error(Throwable("oops")))
             val recipeListStatus = viewModel.recipes.testObserver()
 
             viewModel.loadRecipes()

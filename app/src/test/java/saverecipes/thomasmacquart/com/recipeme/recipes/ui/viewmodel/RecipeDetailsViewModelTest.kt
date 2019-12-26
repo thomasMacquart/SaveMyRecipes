@@ -1,9 +1,8 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import io.reactivex.Completable
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
@@ -51,7 +49,7 @@ class RecipeDetailsViewModelTest {
 
             val recipe = Recipe("test", "test", "test")
 
-            Mockito.`when`(repo.getRecipe(1)).thenReturn(Single.just(recipe))
+            whenever(repo.getRecipe(1)).thenReturn(Single.just(recipe))
             val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
             viewModel.getRecipe(1)
             verify(repo).getRecipe(1)
@@ -61,7 +59,7 @@ class RecipeDetailsViewModelTest {
 
         @Test
         fun `Given a error then on error state is return is returned`() {
-            Mockito.`when`(repo.getRecipe(1)).thenReturn(Single.error(Throwable("oops")))
+            whenever(repo.getRecipe(1)).thenReturn(Single.error(Throwable("oops")))
             val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
             viewModel.getRecipe(1)
             verify(repo).getRecipe(1)

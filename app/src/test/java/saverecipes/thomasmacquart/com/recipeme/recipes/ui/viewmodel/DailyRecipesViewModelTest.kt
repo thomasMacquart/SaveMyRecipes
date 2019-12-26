@@ -1,6 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
@@ -60,7 +61,7 @@ internal class DailyRecipesViewModelTest {
             val list = mutableListOf<Recipe>()
             val recipe = Mockito.mock(Recipe::class.java)
             list.add(recipe)
-            Mockito.`when`(repo.getDailyRecipes()).thenReturn(Single.just(list))
+            whenever(repo.getDailyRecipes()).thenReturn(Single.just(list))
             val recipeListStatus = viewModel.recipesObservable.testObserver()
 
             viewModel.loadDailyRecipes()
@@ -71,7 +72,7 @@ internal class DailyRecipesViewModelTest {
 
         @Test
         fun `Given repo return error return error state`() {
-            Mockito.`when`(repo.getDailyRecipes()).thenReturn(Single.error(Throwable("oops")))
+            whenever(repo.getDailyRecipes()).thenReturn(Single.error(Throwable("oops")))
             val recipeListStatus = viewModel.recipesObservable.testObserver()
 
             viewModel.loadDailyRecipes()
