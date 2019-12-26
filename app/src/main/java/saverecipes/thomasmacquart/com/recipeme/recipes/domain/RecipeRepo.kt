@@ -23,5 +23,5 @@ interface RecipeRepo {
     /**
      * delete recipe from db
      */
-    fun deleteRecipe(recipe: Recipe) : Completable
+    fun deleteRecipe(recipe: Recipe)
 }

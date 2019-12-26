@@ -1,11 +1,13 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.ArgumentMatchers
@@ -15,8 +17,8 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.IRecipeDetailsUserCase
-import saverecipes.thomasmacquart.com.recipeme.recipes.model.RecipeDetailsUiModel
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.testObserver
 
 class RecipeDetailsViewModelTest {
@@ -30,14 +32,14 @@ class RecipeDetailsViewModelTest {
     @get:Rule
     val rxSchedulerRule = RxSchedulerRule()
 
-    private var useCase: IRecipeDetailsUserCase = mock(IRecipeDetailsUserCase::class.java)
+    private var repo: RecipeRepo = mock(RecipeRepo::class.java)
 
     private lateinit var viewModel: RecipeDetailsViewModel
 
-    @Before
+    @BeforeEach
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = RecipeDetailsViewModel(useCase)
+        viewModel = RecipeDetailsViewModel(repo)
     }
 
     @Nested
@@ -46,32 +48,39 @@ class RecipeDetailsViewModelTest {
 
         @Test
         fun `Given a recipe then onSuccess state is returned`() {
-            viewModel = RecipeDetailsViewModel(useCase)
-            val uiModel = RecipeDetailsUiModel("test", "test", "test")
 
-            Mockito.`when`(useCase.getRecipe(1)).thenReturn(Single.just(uiModel))
+            val recipe = Recipe("test", "test", "test")
+
+            Mockito.`when`(repo.getRecipe(1)).thenReturn(Single.just(recipe))
             val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
             viewModel.getRecipe(1)
-            verify(useCase).getRecipe(1)
+            verify(repo).getRecipe(1)
 
-            assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(uiModel)), recipeDetailsStatus.observedValues)
+            assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(recipe)), recipeDetailsStatus.observedValues)
         }
 
         @Test
         fun `Given a error then on error state is return is returned`() {
-            viewModel = RecipeDetailsViewModel(useCase)
-            val uiModel = RecipeDetailsUiModel("test", "test", "test")
-
-            Mockito.`when`(useCase.getRecipe(1)).thenReturn(Single.error(Throwable("oops")))
+            Mockito.`when`(repo.getRecipe(1)).thenReturn(Single.error(Throwable("oops")))
             val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
             viewModel.getRecipe(1)
-            verify(useCase).getRecipe(1)
+            verify(repo).getRecipe(1)
 
             assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnError(ArgumentMatchers.anyString())), recipeDetailsStatus.observedValues)
         }
     }
 
 
+    @Nested
+    @DisplayName("Test delete")
+    inner class TestDeleteRecipe {
 
+        @Test
+        fun `Given repo return success`() {
+
+            viewModel.onDelete()
+            verify(repo, times(1)).deleteRecipe(any())
+        }
+    }
 
 }

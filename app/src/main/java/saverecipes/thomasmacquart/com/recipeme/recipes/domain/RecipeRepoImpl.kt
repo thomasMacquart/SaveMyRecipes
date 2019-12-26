@@ -23,7 +23,7 @@ open class RecipeRepoImpl @Inject constructor(private val mDao: RecipeDao): Reci
         return mDao.findRecipeById(id)
     }
 
-    override fun deleteRecipe(recipe: Recipe) : Completable {
-        return Completable.fromAction { mDao.deleteRecipe(recipe)}
+    override fun deleteRecipe(recipe: Recipe) {
+        return mDao.deleteRecipe(recipe)
     }
 }

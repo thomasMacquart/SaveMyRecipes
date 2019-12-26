@@ -2,6 +2,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class RecipeDetailsViewModel @Inject constructor(private val repo : RecipeRepo) : ViewModel() {
 
     val recipeObservableUi : MutableLiveData<RecipeDetailsState> = MutableLiveData()
-    lateinit var _recipe : Recipe
+    private lateinit var _recipe : Recipe
     private val disposable = CompositeDisposable()
 
     fun getRecipe(id : Long) {
@@ -38,7 +39,14 @@ class RecipeDetailsViewModel @Inject constructor(private val repo : RecipeRepo) 
     }
 
     fun onDelete() {
-        //disposable.add(repo.deleteRecipe())
+        Completable.fromAction { repo.deleteRecipe(_recipe) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onRecipeDeleted, this::onError)
+    }
+
+    private fun onRecipeDeleted() {
+        recipeObservableUi.value = RecipeDetailsState.OnDelete
     }
 }
 
@@ -46,4 +54,5 @@ sealed class RecipeDetailsState {
     data class OnSuccess(val recipe : Recipe) : RecipeDetailsState()
     data class OnError(val error: String) : RecipeDetailsState()
     object  Loading : RecipeDetailsState()
+    object OnDelete : RecipeDetailsState()
 }

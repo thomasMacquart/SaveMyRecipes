@@ -42,7 +42,7 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
         doRequest()
 
         recipe_details_delete_button.setOnClickListener {
-
+            viewModel.onDelete()
         }
     }
 
@@ -56,6 +56,7 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
                 is RecipeDetailsState.OnSuccess -> populateUi(it.recipe)
                 is RecipeDetailsState.OnError -> state_layout.showError(it.error) {doRequest()}
                 is RecipeDetailsState.Loading -> state_layout.showLoading()
+                RecipeDetailsState.OnDelete -> this.finish()
             }.exhaustive
         })
     }
