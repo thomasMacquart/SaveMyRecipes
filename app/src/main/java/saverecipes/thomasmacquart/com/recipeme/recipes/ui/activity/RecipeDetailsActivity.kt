@@ -60,9 +60,6 @@ class RecipeDetailsActivity : BaseViewModelActivity<RecipeDetailsViewModel>(){
     private fun populateUi(recipe : RecipeDetailsUiModel) {
         state_layout.showContent()
         binding.uiModel = recipe
-
-        /*Glide.with(this).load(recipe.uri)
-                .into(detail_image)*/
     }
 
     override fun createViewModel(): RecipeDetailsViewModel {
