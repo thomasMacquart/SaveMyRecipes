@@ -12,6 +12,6 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipe
 @Module
 class CreateRecipeActivityModule {
     @Provides
-    fun provideModelView(repoImpl : RecipeRepoImpl): ViewModelFactory<CreateRecipeViewModel>
-            = ViewModelFactory(CreateRecipeViewModel(repoImpl))
+    fun provideViewModelFactory(repoImpl : RecipeRepoImpl): CreateRecipeViewModel.Factory
+            = CreateRecipeViewModel.Factory(repoImpl)
 }

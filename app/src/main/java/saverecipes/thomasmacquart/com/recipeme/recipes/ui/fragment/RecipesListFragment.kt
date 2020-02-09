@@ -1,15 +1,19 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.recipes_list_fragment.*
+import kotlinx.android.synthetic.main.recipes_list_fragment.create_recipe_button
+import kotlinx.android.synthetic.main.recipes_list_fragment.recipes_list
+import kotlinx.android.synthetic.main.recipes_list_fragment.state_layout
 import saverecipes.thomasmacquart.com.recipeme.R
-import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelFragment
+import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
@@ -18,8 +22,14 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAda
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.view.ItemDecorationRecipesColumns
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListViewModel
+import javax.inject.Inject
 
-class RecipesListFragment : BaseViewModelFragment<RecipeListViewModel>() {
+class RecipesListFragment : Fragment() {
+
+    @Inject
+    lateinit var factory : RecipeListViewModel.Factory
+
+    private val viewModel by viewModels<RecipeListViewModel> {factory}
 
     companion object {
         fun newInstance() : RecipesListFragment {
@@ -32,13 +42,13 @@ class RecipesListFragment : BaseViewModelFragment<RecipeListViewModel>() {
         startActivity(activity?.let { it1 -> RecipeDetailsActivity.getStartIntent(it1, it.id) })
     } }
 
-    override fun createViewModel(): RecipeListViewModel {
-        return ViewModelProviders.of(this, factory)
-                .get(RecipeListViewModel::class.java)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.recipes_list_fragment, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().applicationContext as RecipeMeApplication).appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

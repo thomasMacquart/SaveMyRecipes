@@ -16,16 +16,11 @@ import javax.inject.Singleton
 
 @Module
 class AppModule {
-    @Provides
-    @Singleton
-    fun provideContext(app : RecipeMeApplication) : Context {
-        return app;
-    }
 
     @Singleton
     @Provides
-    fun providesRoomDatabase(application: RecipeMeApplication): AppDatabase {
-        return Room.databaseBuilder(application,
+    fun providesRoomDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(context,
                 AppDatabase::class.java, "recipeme-db").build()
     }
 

@@ -12,7 +12,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListVi
 @Module
 class RecipesListModule {
     @Provides
-    fun provideModelView(repoImpl : RecipeRepoImpl): ViewModelFactory<RecipeListViewModel>
-            = ViewModelFactory(RecipeListViewModel(repoImpl))
+    fun provideViewModelFactory(repoImpl : RecipeRepoImpl): RecipeListViewModel.Factory
+            = RecipeListViewModel.Factory(repoImpl)
 
 }

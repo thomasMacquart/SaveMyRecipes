@@ -14,6 +14,6 @@ class DailyRecipeModule {
     fun provideDailyRecipesRepo(dailyRecipeService: DailyRecipeService) : DailyRecipesRepo = DailyRecipesRepo(dailyRecipeService)
 
     @Provides
-    fun provideDailyRecipeViewModel(dailyRecipesRepo: DailyRecipesRepo) : DailyRecipesViewModel =
-            DailyRecipesViewModel(dailyRecipesRepo)
+    fun provideDailyRecipeViewModelFactory(dailyRecipesRepo: DailyRecipesRepo) : DailyRecipesViewModel.Factory =
+            DailyRecipesViewModel.Factory(dailyRecipesRepo)
 }

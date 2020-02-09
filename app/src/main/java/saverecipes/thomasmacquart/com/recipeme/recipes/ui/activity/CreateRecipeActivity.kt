@@ -11,18 +11,18 @@ import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import kotlinx.android.synthetic.main.create_recipe_activity.*
+import kotlinx.android.synthetic.main.create_recipe_activity.recipe_desciption_input
+import kotlinx.android.synthetic.main.create_recipe_activity.recipe_title_input
+import kotlinx.android.synthetic.main.create_recipe_activity.recipe_type_spinner
+import kotlinx.android.synthetic.main.create_recipe_activity.select_image
+import kotlinx.android.synthetic.main.create_recipe_activity.take_photo
+import kotlinx.android.synthetic.main.create_recipe_activity.validate_recipe_button
+import kotlinx.android.synthetic.main.create_recipe_activity.view_state
 import saverecipes.thomasmacquart.com.recipeme.BuildConfig
 import saverecipes.thomasmacquart.com.recipeme.R
-import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelActivity
-import saverecipes.thomasmacquart.com.recipeme.core.ViewModelFactory
+import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeState
@@ -31,14 +31,18 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipe
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
-
 
 /**
  * Created by thomas.macquart on 21/03/2018.
  */
-class CreateRecipeActivity : BaseViewModelActivity<CreateRecipeViewModel>() {
+class CreateRecipeActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var factory: CreateRecipeViewModel.Factory
+
+    private lateinit var viewModel: CreateRecipeViewModel
 
     companion object {
         private const val REQUEST_TAKE_PHOTO = 1
@@ -51,8 +55,10 @@ class CreateRecipeActivity : BaseViewModelActivity<CreateRecipeViewModel>() {
     private var mCurrentPhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as RecipeMeApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_recipe_activity)
+        viewModel = CreateRecipeViewModel.obtain(this, factory)
 
         val adapter = ArrayAdapter.createFromResource(this,
                 R.array.meal_types, android.R.layout.simple_spinner_item)
@@ -147,15 +153,5 @@ class CreateRecipeActivity : BaseViewModelActivity<CreateRecipeViewModel>() {
                 }
             }
         }
-    }
-
-
-    override fun createViewModel(): CreateRecipeViewModel {
-        return ViewModelProviders.of(this, factory)
-                .get(CreateRecipeViewModel::class.java)
-    }
-
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return activityDispatchingAndroidInjector
     }
 }

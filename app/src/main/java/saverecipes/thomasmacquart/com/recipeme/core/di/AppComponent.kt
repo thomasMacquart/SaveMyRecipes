@@ -1,11 +1,17 @@
 package saverecipes.thomasmacquart.com.recipeme.core.di
 
+import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
-import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
+import saverecipes.thomasmacquart.com.recipeme.recipes.di.CreateRecipeActivityModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.di.DailyRecipeModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipeDetailsModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesListModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.MainNavigationActivity
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment.DailyRecipesFragment
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment.RecipesListFragment
 import javax.inject.Singleton
 
 /**
@@ -13,16 +19,21 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = arrayOf(AndroidInjectionModule::class, AppModule::class, ActivityBuilder::class, FragmentBuilder::class, NetworkModule::class))
-interface AppComponent : AndroidInjector<DaggerApplication> {
+@Component(modules = [AppModule::class, NetworkModule::class, CreateRecipeActivityModule::class, DailyRecipeModule::class, RecipeDetailsModule::class, RecipesListModule::class])
+interface AppComponent  {
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun application(app: RecipeMeApplication): Builder
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance context: Context) : AppComponent
     }
 
-    override fun inject(instance: DaggerApplication)
 
-    fun inject(app: RecipeMeApplication)
+    fun inject(activity: MainNavigationActivity)
+    fun inject(activity: CreateRecipeActivity)
+    fun inject(activity: RecipeDetailsActivity)
+    fun inject(fragment: RecipesListFragment)
+    fun inject(fragment: DailyRecipesFragment)
+
+
+
 }

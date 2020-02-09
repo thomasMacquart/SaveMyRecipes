@@ -1,23 +1,34 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.daily_recipes_fragment.*
 import saverecipes.thomasmacquart.com.recipeme.R
+import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.core.BaseViewModelFragment
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.adapter.RecipesListAdapter
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.CreateRecipeViewModel
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.DailyRecipesState
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.DailyRecipesViewModel
+import javax.inject.Inject
 
-class DailyRecipesFragment : BaseViewModelFragment<DailyRecipesViewModel>() {
+class DailyRecipesFragment : Fragment() {
+
+    @Inject
+    lateinit var factory: DailyRecipesViewModel.Factory
+
+    private val viewModel by viewModels<DailyRecipesViewModel> {factory}
 
     companion object {
         fun newInstance() : DailyRecipesFragment {
@@ -48,6 +59,11 @@ class DailyRecipesFragment : BaseViewModelFragment<DailyRecipesViewModel>() {
         viewModel.loadDailyRecipes()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().applicationContext as RecipeMeApplication).appComponent.inject(this)
+    }
+
     private fun observe() {
         viewModel.recipesObservable.observe(this, Observer {
             when (it) {
@@ -62,10 +78,5 @@ class DailyRecipesFragment : BaseViewModelFragment<DailyRecipesViewModel>() {
                 DailyRecipesState.ShowEmpty -> daily_content_state.showEmpty()
             }.exhaustive
         })
-    }
-
-    override fun createViewModel(): DailyRecipesViewModel {
-        return ViewModelProviders.of(this, factory)
-                .get(DailyRecipesViewModel::class.java)
     }
 }
