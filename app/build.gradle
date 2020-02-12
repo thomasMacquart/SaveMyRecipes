@@ -97,6 +97,9 @@ dependencies {
     implementation libraries.retrofitRxAdapter
     implementation libraries.retrofitGsonConverter
     implementation libraries.retrofitLogginInterceptor
+
+    implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.1"
 }
 
 kapt {

@@ -1,28 +1,28 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.DailyRecipesRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import javax.inject.Inject
 
-class DailyRecipesViewModel @Inject constructor(private val repo : DailyRecipesRepo) : ViewModel() {
+class DailyRecipesViewModel @Inject constructor(private val repo : DailyRecipesRepo ) : ViewModel() {
     val recipesObservable : MutableLiveData<DailyRecipesState> = MutableLiveData()
-    private val disposable = CompositeDisposable()
 
     fun loadDailyRecipes() {
         recipesObservable.value = DailyRecipesState.Loading
-        disposable.add(repo.getDailyRecipes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onSuccess, this::onError))
+        viewModelScope.launch {
+            val result = repo.getDailyRecipes()
+            when (result) {
+                is AsyncResponse.Success -> onSuccess(result.data)
+                is AsyncResponse.Failed -> onError(result.exception)
+            }.exhaustive
+        }
     }
 
     private fun onSuccess(recipes : List<Recipe>) {

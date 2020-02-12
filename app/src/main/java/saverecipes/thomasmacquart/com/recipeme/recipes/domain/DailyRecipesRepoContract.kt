@@ -1,7 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
-import io.reactivex.Single
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 
 interface DailyRecipesRepoContract {
-    fun getDailyRecipes() : Single<List<Recipe>>
+    suspend fun getDailyRecipes() : AsyncResponse<List<Recipe>>
 }
