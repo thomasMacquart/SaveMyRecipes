@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.recipe_details_activity.recipe_details_delete_button
 import kotlinx.android.synthetic.main.recipe_details_activity.state_layout
 import saverecipes.thomasmacquart.com.recipeme.R
+import saverecipes.thomasmacquart.com.recipeme.RecipeMeApplication
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.databinding.RecipeDetailsActivityBinding
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
@@ -36,6 +37,8 @@ class RecipeDetailsActivity : AppCompatActivity(){
     private lateinit var binding : RecipeDetailsActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val recipesComponent = (applicationContext as RecipeMeApplication).appComponent.recipesComponent().create()
+        recipesComponent.inject(this)
         super.onCreate(savedInstanceState)
         viewModel = RecipeDetailsViewModel.obtain(this, factory)
 
