@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 
 class CreateRecipeViewModelTest {
 
@@ -24,7 +25,7 @@ class CreateRecipeViewModelTest {
     @get:Rule
     val rxSchedulerRule = RxSchedulerRule()
 
-    private val repo  = mock(RecipeRepo::class.java)
+    private val repo  = mock(RecipeRepoImpl::class.java)
 
     private lateinit var viewModel : CreateRecipeViewModel
 

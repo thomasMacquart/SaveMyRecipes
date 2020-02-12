@@ -1,6 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Flowable
 import org.junit.Before
@@ -19,6 +20,7 @@ import org.mockito.junit.MockitoRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 import saverecipes.thomasmacquart.com.recipeme.recipes.testObserver
 
 
@@ -36,8 +38,7 @@ class RecipeListViewModelTest {
     @get:Rule
     val rxSchedulerRule = RxSchedulerRule()
 
-    @Mock
-    private lateinit var repo : RecipeRepo
+    private val repo : RecipeRepoImpl = mock()
 
     private lateinit var viewModel : RecipeListViewModel
 

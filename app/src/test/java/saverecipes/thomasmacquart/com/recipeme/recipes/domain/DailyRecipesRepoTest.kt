@@ -1,5 +1,6 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
+import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -11,10 +12,9 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.data.DailyRecipeService
 
 internal class DailyRecipesRepoTest {
 
-    @Mock
-    lateinit var service : DailyRecipeService
+    private val service : DailyRecipeService = mock()
 
-    lateinit var repo : DailyRecipesRepo
+    private lateinit var repo : DailyRecipesRepo
 
     @Before
     fun setUp() {

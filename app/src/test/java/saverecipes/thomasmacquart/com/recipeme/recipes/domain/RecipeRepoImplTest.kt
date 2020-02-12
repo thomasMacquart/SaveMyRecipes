@@ -1,10 +1,14 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
+import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Flowable
 import io.reactivex.Single
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyLong
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
@@ -12,8 +16,7 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 
 internal class RecipeRepoImplTest {
 
-    @Mock
-    private lateinit var dao : RecipeDao
+    private val dao : RecipeDao = mock()
 
     private val repoImpl : RecipeRepoImpl by lazy { RecipeRepoImpl(dao) }
 

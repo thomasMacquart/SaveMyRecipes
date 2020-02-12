@@ -1,6 +1,7 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Rule
@@ -10,13 +11,16 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.*
+import org.mockito.Mockito.any
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
+import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 import saverecipes.thomasmacquart.com.recipeme.recipes.testObserver
 
 class RecipeDetailsViewModelTest {
@@ -30,7 +34,7 @@ class RecipeDetailsViewModelTest {
     @get:Rule
     val rxSchedulerRule = RxSchedulerRule()
 
-    private var repo: RecipeRepo = mock(RecipeRepo::class.java)
+    private var repo: RecipeRepoImpl = mock()
 
     private lateinit var viewModel: RecipeDetailsViewModel
 
