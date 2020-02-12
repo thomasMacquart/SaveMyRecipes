@@ -6,6 +6,7 @@ import dagger.Component
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.CreateRecipeActivityModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.DailyRecipeModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipeDetailsModule
+import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesComponent
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesListModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.MainNavigationActivity
@@ -19,7 +20,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class, CreateRecipeActivityModule::class, DailyRecipeModule::class, RecipeDetailsModule::class, RecipesListModule::class])
+@Component(modules = [AppModule::class, NetworkModule::class, AppSubComponents::class])
 interface AppComponent  {
 
     @Component.Factory
@@ -27,13 +28,7 @@ interface AppComponent  {
         fun create(@BindsInstance context: Context) : AppComponent
     }
 
+    fun recipesComponent(): RecipesComponent.Factory
 
     fun inject(activity: MainNavigationActivity)
-    fun inject(activity: CreateRecipeActivity)
-    fun inject(activity: RecipeDetailsActivity)
-    fun inject(fragment: RecipesListFragment)
-    fun inject(fragment: DailyRecipesFragment)
-
-
-
 }

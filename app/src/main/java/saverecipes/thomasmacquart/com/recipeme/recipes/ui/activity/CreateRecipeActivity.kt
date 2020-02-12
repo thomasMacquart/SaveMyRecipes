@@ -55,7 +55,8 @@ class CreateRecipeActivity : AppCompatActivity() {
     private var mCurrentPhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as RecipeMeApplication).appComponent.inject(this)
+        val recipesComponent = (applicationContext as RecipeMeApplication).appComponent.recipesComponent().create()
+        recipesComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_recipe_activity)
         viewModel = CreateRecipeViewModel.obtain(this, factory)

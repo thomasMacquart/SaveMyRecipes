@@ -61,7 +61,8 @@ class DailyRecipesFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().applicationContext as RecipeMeApplication).appComponent.inject(this)
+        val recipesComponent = (requireActivity().applicationContext as RecipeMeApplication).appComponent.recipesComponent().create()
+        recipesComponent.inject(this)
     }
 
     private fun observe() {
