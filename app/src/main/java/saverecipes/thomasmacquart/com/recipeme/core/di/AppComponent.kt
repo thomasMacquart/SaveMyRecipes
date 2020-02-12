@@ -3,16 +3,8 @@ package saverecipes.thomasmacquart.com.recipeme.core.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import saverecipes.thomasmacquart.com.recipeme.recipes.di.CreateRecipeActivityModule
-import saverecipes.thomasmacquart.com.recipeme.recipes.di.DailyRecipeModule
-import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipeDetailsModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesComponent
-import saverecipes.thomasmacquart.com.recipeme.recipes.di.RecipesListModule
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.MainNavigationActivity
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment.DailyRecipesFragment
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment.RecipesListFragment
 import javax.inject.Singleton
 
 /**
@@ -20,7 +12,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class, AppSubComponents::class])
+@Component(modules = [NetworkModule::class, AppSubComponents::class])
 interface AppComponent  {
 
     @Component.Factory

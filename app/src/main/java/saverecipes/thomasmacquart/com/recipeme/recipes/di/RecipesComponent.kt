@@ -1,12 +1,13 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.di
 
 import dagger.Subcomponent
+import saverecipes.thomasmacquart.com.recipeme.core.di.RecipesPersistenceModule
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.CreateRecipeActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.activity.RecipeDetailsActivity
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment.DailyRecipesFragment
 import saverecipes.thomasmacquart.com.recipeme.recipes.ui.fragment.RecipesListFragment
 
-@Subcomponent(modules = [CreateRecipeActivityModule::class, DailyRecipeModule::class, RecipeDetailsModule::class, RecipesListModule::class])
+@Subcomponent(modules = [RecipesPersistenceModule::class, CreateRecipeActivityModule::class, DailyRecipeModule::class, RecipeDetailsModule::class, RecipesListModule::class])
 interface RecipesComponent {
 
     @Subcomponent.Factory
