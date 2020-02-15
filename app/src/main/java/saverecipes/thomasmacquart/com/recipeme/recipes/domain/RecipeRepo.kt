@@ -1,27 +1,25 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 
 interface RecipeRepo {
     /**
      * return all recipes
      */
-    fun getRecipes(): Flowable<List<Recipe>>
+    suspend fun getRecipes(): AsyncResponse<List<Recipe>>
 
     /**
      * save a recipe
      */
-    fun addRecipe(recipe: Recipe) : Completable
+    suspend fun addRecipe(recipe: Recipe)
 
     /**
      * get recipe by its id
      */
-    fun getRecipe(id : Long) : Single<Recipe>
+    suspend fun getRecipe(id : Long) : AsyncResponse<Recipe>
 
     /**
      * delete recipe from db
      */
-    fun deleteRecipe(recipe: Recipe)
+    suspend fun deleteRecipe(recipe: Recipe)
 }

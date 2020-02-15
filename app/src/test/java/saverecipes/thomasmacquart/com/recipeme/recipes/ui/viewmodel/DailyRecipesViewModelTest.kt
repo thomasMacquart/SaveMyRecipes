@@ -3,7 +3,7 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Single
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.ArgumentMatchers
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
-import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.DailyRecipesRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 import saverecipes.thomasmacquart.com.recipeme.recipes.testObserver
+import saverecipes.thomasmacquart.com.recipeme.recipes.utils.CoroutinesTestRule
 
 internal class DailyRecipesViewModelTest {
     @get:Rule
@@ -29,7 +29,7 @@ internal class DailyRecipesViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    val rxSchedulerRule = RxSchedulerRule()
+    var coroutinesTestRule = CoroutinesTestRule()
 
     private val repo : DailyRecipesRepo = mock()
 
@@ -47,38 +47,44 @@ internal class DailyRecipesViewModelTest {
     inner class TestLoadRecipes {
         @Test
         fun `Given list is empty return empty state`() {
-            Mockito.`when`(repo.getDailyRecipes()).thenReturn(Single.just(listOf()))
-            val recipeListStatus = viewModel.recipesObservable.testObserver()
+            coroutinesTestRule.runBlockingTest {
+                Mockito.`when`(repo.getDailyRecipes()).thenReturn(AsyncResponse.Success(listOf()))
+                val recipeListStatus = viewModel.recipesObservable.testObserver()
 
-            viewModel.loadDailyRecipes()
-            Mockito.verify(repo.getDailyRecipes(), Mockito.times(1))
+                viewModel.loadDailyRecipes()
+                Mockito.verify(repo.getDailyRecipes(), Mockito.times(1))
 
-            assertEquals(listOf(DailyRecipesState.Loading, DailyRecipesState.ShowEmpty), recipeListStatus.observedValues)
+                assertEquals(listOf(DailyRecipesState.Loading, DailyRecipesState.ShowEmpty), recipeListStatus.observedValues)
+            }
         }
 
         @Test
         fun `Given list is not empty return success state`() {
-            val list = mutableListOf<Recipe>()
-            val recipe = Mockito.mock(Recipe::class.java)
-            list.add(recipe)
-            whenever(repo.getDailyRecipes()).thenReturn(Single.just(list))
-            val recipeListStatus = viewModel.recipesObservable.testObserver()
+            coroutinesTestRule.runBlockingTest {
+                val list = mutableListOf<Recipe>()
+                val recipe = Mockito.mock(Recipe::class.java)
+                list.add(recipe)
+                whenever(repo.getDailyRecipes()).thenReturn(AsyncResponse.Success(list))
+                val recipeListStatus = viewModel.recipesObservable.testObserver()
 
-            viewModel.loadDailyRecipes()
-            Mockito.verify(repo.getDailyRecipes(), Mockito.times(1))
+                viewModel.loadDailyRecipes()
+                Mockito.verify(repo.getDailyRecipes(), Mockito.times(1))
 
-            assertEquals(listOf(DailyRecipesState.Loading, DailyRecipesState.ShowRecipes(list)), recipeListStatus.observedValues)
+                assertEquals(listOf(DailyRecipesState.Loading, DailyRecipesState.ShowRecipes(list)), recipeListStatus.observedValues)
+            }
         }
 
         @Test
         fun `Given repo return error return error state`() {
-            whenever(repo.getDailyRecipes()).thenReturn(Single.error(Throwable("oops")))
-            val recipeListStatus = viewModel.recipesObservable.testObserver()
+            coroutinesTestRule.runBlockingTest {
+                whenever(repo.getDailyRecipes()).thenReturn(AsyncResponse.Failed(Exception("oops")))
+                val recipeListStatus = viewModel.recipesObservable.testObserver()
 
-            viewModel.loadDailyRecipes()
-            Mockito.verify(repo.getDailyRecipes(), Mockito.times(1))
+                viewModel.loadDailyRecipes()
+                Mockito.verify(repo.getDailyRecipes(), Mockito.times(1))
 
-            assertEquals(listOf(DailyRecipesState.Loading, DailyRecipesState.ShowError(ArgumentMatchers.anyString())), recipeListStatus.observedValues)
+                assertEquals(listOf(DailyRecipesState.Loading, DailyRecipesState.ShowError(ArgumentMatchers.anyString())), recipeListStatus.observedValues)
+            }
         }
     }
 }

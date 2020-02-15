@@ -3,15 +3,17 @@ package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
-import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState.*
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState.EmptyState
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState.ErrorState
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState.LoadingState
+import saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel.RecipeListState.SuccessState
 import javax.inject.Inject
-
 
 /**
  * Created by thomas.macquart on 14/02/2018.
@@ -19,14 +21,16 @@ import javax.inject.Inject
 open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepoImpl) : ViewModel() {
 
     val recipes: MutableLiveData<RecipeListState> = MutableLiveData()
-    private val disposable  = CompositeDisposable()
 
     open fun loadRecipes()  {
         recipes.value = LoadingState
-        disposable.add(repo.getRecipes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onRecipesReceived, this::onError))
+        viewModelScope.launch {
+            val result = repo.getRecipes()
+            when (result) {
+                is AsyncResponse.Success -> onRecipesReceived(result.data)
+                is AsyncResponse.Failed -> onError(result.exception)
+            }.exhaustive
+        }
     }
 
     private fun onRecipesReceived(recipesList : List<Recipe>) {
@@ -40,11 +44,6 @@ open class RecipeListViewModel @Inject constructor(private val repo : RecipeRepo
     private fun onError(error: Throwable) {
         //todo localize it
         recipes.value = ErrorState("something went wrong")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposable.dispose()
     }
 
     class Factory(

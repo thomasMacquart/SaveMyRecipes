@@ -1,18 +1,18 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Completable
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
-import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
+import saverecipes.thomasmacquart.com.recipeme.recipes.utils.CoroutinesTestRule
 
 class CreateRecipeViewModelTest {
 
@@ -23,7 +23,7 @@ class CreateRecipeViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    val rxSchedulerRule = RxSchedulerRule()
+    var coroutinesTestRule = CoroutinesTestRule()
 
     private val repo  = mock(RecipeRepoImpl::class.java)
 
@@ -36,12 +36,12 @@ class CreateRecipeViewModelTest {
 
     @Test
     fun createRecipeTest() {
-        val recipe = Recipe("test", "bla")
+        coroutinesTestRule.runBlockingTest {
+            val recipe = Recipe("test", "bla")
 
-        whenever(repo.addRecipe(recipe)).thenReturn(Completable.complete())
-
-        viewModel.sendIntention(CreateRecipesIntentions.CreateRecipe(recipe))
-        verify(repo, times(1)).addRecipe(recipe)
+            viewModel.sendIntention(CreateRecipesIntentions.CreateRecipe(recipe))
+            verify(repo, times(1)).addRecipe(recipe)
+        }
     }
 
 }

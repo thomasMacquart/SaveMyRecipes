@@ -5,12 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 import javax.inject.Inject
 
@@ -18,14 +17,16 @@ class RecipeDetailsViewModel @Inject constructor(private val repo : RecipeRepoIm
 
     val recipeObservableUi : MutableLiveData<RecipeDetailsState> = MutableLiveData()
     private lateinit var _recipe : Recipe
-    private val disposable = CompositeDisposable()
 
     fun getRecipe(id : Long) {
         recipeObservableUi.value = RecipeDetailsState.Loading
-        disposable.add(repo.getRecipe(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onRecipeReceived, this::onError))
+        viewModelScope.launch {
+            val result = repo.getRecipe(id)
+            when (result) {
+                is AsyncResponse.Success -> onRecipeReceived(result.data)
+                is AsyncResponse.Failed ->onError(result.exception)
+            }.exhaustive
+        }
     }
 
     private fun onRecipeReceived(recipe : Recipe) {
@@ -37,20 +38,11 @@ class RecipeDetailsViewModel @Inject constructor(private val repo : RecipeRepoIm
         recipeObservableUi.value = RecipeDetailsState.OnError("oops")
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        disposable.dispose()
-    }
-
     fun onDelete() {
-        Completable.fromAction { repo.deleteRecipe(_recipe) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onRecipeDeleted, this::onError)
-    }
-
-    private fun onRecipeDeleted() {
-        recipeObservableUi.value = RecipeDetailsState.OnDelete
+        viewModelScope.launch {
+            repo.deleteRecipe(_recipe)
+            recipeObservableUi.value = RecipeDetailsState.OnDelete
+        }
     }
 
     class Factory(

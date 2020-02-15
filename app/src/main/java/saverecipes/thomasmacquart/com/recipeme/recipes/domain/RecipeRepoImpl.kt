@@ -1,8 +1,8 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.domain
 
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 import saverecipes.thomasmacquart.com.recipeme.recipes.dao.RecipeDao
 import javax.inject.Inject
 
@@ -11,19 +11,20 @@ import javax.inject.Inject
  */
 open class RecipeRepoImpl @Inject constructor(private val mDao: RecipeDao): RecipeRepo{
 
-    override fun getRecipes(): Flowable<List<Recipe>> {
-        return mDao.getRecipes()
+
+    override suspend fun getRecipes(): AsyncResponse<List<Recipe>> {
+        return withContext(Dispatchers.IO) {AsyncResponse.Success(mDao.getRecipes())}
     }
 
-    override fun addRecipe(recipe: Recipe) : Completable {
-       return Completable.fromAction { mDao.saveRecipe(recipe)}
+    override suspend fun addRecipe(recipe: Recipe) {
+       return  withContext(Dispatchers.IO) {mDao.saveRecipe(recipe)}
     }
 
-    override fun getRecipe(id : Long) : Single<Recipe> {
-        return mDao.findRecipeById(id)
+    override suspend fun getRecipe(id: Long): AsyncResponse<Recipe> {
+        return withContext(Dispatchers.IO) {AsyncResponse.Success(mDao.findRecipeById(id))}
     }
 
-    override fun deleteRecipe(recipe: Recipe) {
-        return mDao.deleteRecipe(recipe)
+    override suspend fun deleteRecipe(recipe: Recipe) {
+        return withContext(Dispatchers.IO) {mDao.deleteRecipe(recipe)}
     }
 }

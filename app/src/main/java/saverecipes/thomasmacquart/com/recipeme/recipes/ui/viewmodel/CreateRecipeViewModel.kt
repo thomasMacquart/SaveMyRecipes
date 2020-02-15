@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import saverecipes.thomasmacquart.com.recipeme.core.exhaustive
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 import javax.inject.Inject
 
@@ -21,24 +19,17 @@ import javax.inject.Inject
 class CreateRecipeViewModel @Inject constructor(private val repo : RecipeRepoImpl) : ViewModel(){
 
     val uiObservable = MutableLiveData<CreateRecipeState>()
-    private val disposable = CompositeDisposable()
 
     private fun createRecipe(recipe : Recipe)  {
-        disposable.add(repo.addRecipe(recipe)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe())
+        viewModelScope.launch {
+            repo.addRecipe(recipe)
+        }
     }
 
     fun sendIntention(intention : CreateRecipesIntentions) {
         when (intention) {
             is CreateRecipesIntentions.CreateRecipe -> createRecipe(intention.recipe)
         }.exhaustive
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposable.dispose()
     }
 
     class Factory(

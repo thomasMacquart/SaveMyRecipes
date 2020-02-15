@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -17,11 +18,12 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
-import saverecipes.thomasmacquart.com.recipeme.recipes.RxSchedulerRule
+import saverecipes.thomasmacquart.com.recipeme.core.utils.AsyncResponse
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
-import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepo
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.RecipeRepoImpl
 import saverecipes.thomasmacquart.com.recipeme.recipes.testObserver
+import saverecipes.thomasmacquart.com.recipeme.recipes.utils.CoroutinesTestRule
+import java.lang.Exception
 
 class RecipeDetailsViewModelTest {
 
@@ -32,7 +34,7 @@ class RecipeDetailsViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    val rxSchedulerRule = RxSchedulerRule()
+    var coroutinesTestRule = CoroutinesTestRule()
 
     private var repo: RecipeRepoImpl = mock()
 
@@ -50,25 +52,28 @@ class RecipeDetailsViewModelTest {
 
         @Test
         fun `Given a recipe then onSuccess state is returned`() {
+            coroutinesTestRule.runBlockingTest {
+                val recipe = Recipe("test", "test", "test")
 
-            val recipe = Recipe("test", "test", "test")
+                whenever(repo.getRecipe(1)).thenReturn(AsyncResponse.Success(recipe))
+                val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
+                viewModel.getRecipe(1)
+                verify(repo).getRecipe(1)
 
-            whenever(repo.getRecipe(1)).thenReturn(Single.just(recipe))
-            val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
-            viewModel.getRecipe(1)
-            verify(repo).getRecipe(1)
-
-            assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(recipe)), recipeDetailsStatus.observedValues)
+                assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnSuccess(recipe)), recipeDetailsStatus.observedValues)
+            }
         }
 
         @Test
         fun `Given a error then on error state is return is returned`() {
-            whenever(repo.getRecipe(1)).thenReturn(Single.error(Throwable("oops")))
-            val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
-            viewModel.getRecipe(1)
-            verify(repo).getRecipe(1)
+            coroutinesTestRule.runBlockingTest {
+                whenever(repo.getRecipe(1)).thenReturn(AsyncResponse.Failed(Exception("oops")))
+                val recipeDetailsStatus = viewModel.recipeObservableUi.testObserver()
+                viewModel.getRecipe(1)
+                verify(repo).getRecipe(1)
 
-            assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnError(ArgumentMatchers.anyString())), recipeDetailsStatus.observedValues)
+                assertEquals(listOf(RecipeDetailsState.Loading, RecipeDetailsState.OnError(ArgumentMatchers.anyString())), recipeDetailsStatus.observedValues)
+            }
         }
     }
 
@@ -79,9 +84,10 @@ class RecipeDetailsViewModelTest {
 
         @Test
         fun `Given repo return success`() {
-
-            viewModel.onDelete()
-            verify(repo, times(1)).deleteRecipe(any())
+            coroutinesTestRule.runBlockingTest {
+                viewModel.onDelete()
+                verify(repo, times(1)).deleteRecipe(any())
+            }
         }
     }
 

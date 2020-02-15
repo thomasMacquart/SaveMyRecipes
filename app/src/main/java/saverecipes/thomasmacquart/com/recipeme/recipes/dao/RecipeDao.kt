@@ -1,14 +1,10 @@
 package saverecipes.thomasmacquart.com.recipeme.recipes.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
 import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 
 /**
@@ -18,12 +14,12 @@ import saverecipes.thomasmacquart.com.recipeme.recipes.domain.Recipe
 interface RecipeDao {
 
     @Insert(onConflict = REPLACE)
-    fun saveRecipe(recipe: Recipe)
+    suspend fun saveRecipe(recipe: Recipe)
     @Query("select * from Recipe")
-    fun getRecipes() : Flowable<List<Recipe>>
+    suspend fun getRecipes() : List<Recipe>
     @Query("select * from Recipe where id = :id")
-    fun findRecipeById(id : Long) : Single<Recipe>
+    suspend fun findRecipeById(id : Long) : Recipe
     @Delete
-    fun deleteRecipe(recipe: Recipe)
+    suspend fun deleteRecipe(recipe: Recipe)
 
 }

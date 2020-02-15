@@ -25,7 +25,7 @@ internal class RecipeRepoImplTest {
         MockitoAnnotations.initMocks(this)
     }
 
-    @Nested
+    /*@Nested
     @DisplayName("Test get recipe")
     inner class TestGetRecipe {
         @Test
@@ -77,5 +77,5 @@ internal class RecipeRepoImplTest {
 
             repoImpl.getRecipes().test().assertError(result)
         }
-    }
+    }*/
 }
